@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="ג'רוזלם">
+<link rel="icon" type="image/png" sizes="192x192" href="https://moty31700.github.io/assets/icon-192.png">
+<link rel="shortcut icon" href="https://moty31700.github.io/assets/icon-192.png">
+<title>ג'רוזלם — הדג נחש</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Hebrew:wght@300;400;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream:#f4efe6; --cream-dark:#e4dac8;
+  --ink:#1a1410; --ink-light:#4a3828;
+  --gold:#8a6b20; --gold-light:#b8902a;
+  --rust:#7a2e10; --sage:#3a5630; --blue:#12304a;
+  --purple:#4a2a6a; --teal:#1a4a5a; --olive:#5a5a1a;
+  --border:rgba(138,107,32,.28);
+  --safe-bottom:env(safe-area-inset-bottom,0px);
+  --safe-top:env(safe-area-inset-top,0px);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;background:var(--cream);}
+body{font-family:'Crimson Pro',serif;color:var(--ink);display:flex;flex-direction:column;height:100svh;}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");}
+
+/* TOP BAR */
+.topbar{flex-shrink:0;background:linear-gradient(to bottom,var(--cream-dark),var(--cream));border-bottom:2px solid var(--gold);padding:calc(var(--safe-top) + .5rem) 1rem .55rem;text-align:center;position:relative;z-index:10;}
+.topbar-heb{font-family:'Noto Serif Hebrew',serif;font-size:1.5rem;font-weight:700;direction:rtl;line-height:1.2;}
+.topbar-sub{font-size:.75rem;font-style:italic;color:var(--ink-light);margin-top:.1rem;}
+
+/* SCROLL */
+.scroll-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;position:relative;z-index:1;padding:1rem 1rem 1.5rem;}
+
+/* INTRO */
+.intro-card{background:linear-gradient(135deg,rgba(138,107,32,.09),rgba(138,107,32,.03));border:1px solid var(--border);border-left:4px solid var(--gold);border-radius:6px;padding:1.1rem 1rem;margin-bottom:1rem;font-size:.88rem;line-height:1.6;}
+.intro-card h3{font-family:'Noto Serif Hebrew',serif;font-size:1rem;color:var(--gold);margin-bottom:.55rem;direction:rtl;}
+.intro-card p{margin-bottom:.5rem;}
+.facts{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.5rem;}
+.fact{background:rgba(138,107,32,.1);border:1px solid var(--border);border-radius:3px;padding:.1rem .45rem;font-size:.73rem;color:var(--ink-light);font-style:italic;}
+
+/* PICKER */
+.strophe-picker{display:flex;overflow-x:auto;gap:.4rem;padding:.3rem 0 .5rem;margin-bottom:.8rem;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
+.strophe-picker::-webkit-scrollbar{display:none;}
+.sp-btn{flex-shrink:0;background:none;border:1px solid var(--border);border-radius:20px;padding:.28rem .85rem;font-family:'Crimson Pro',serif;font-size:.8rem;color:var(--ink-light);cursor:pointer;white-space:nowrap;transition:all .18s;}
+.sp-btn.active{background:var(--gold);color:var(--cream);border-color:var(--gold);}
+
+/* VIEW TOGGLE */
+.view-toggle{display:grid;grid-template-columns:1fr 1fr;gap:.4rem;margin-bottom:1rem;}
+.vt-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:.4rem .5rem;font-family:'Crimson Pro',serif;font-size:.83rem;cursor:pointer;color:var(--ink-light);transition:all .18s;text-align:center;}
+.vt-btn.active{background:var(--ink);color:var(--cream);border-color:var(--ink);}
+
+/* VERS CARD */
+.vers-card{background:var(--cream);border:1px solid var(--border);border-radius:8px;margin-bottom:.8rem;overflow:hidden;box-shadow:0 1px 6px rgba(26,20,16,.07);}
+.vers-head{padding:.8rem 1rem;border-bottom:1px solid rgba(138,107,32,.12);}
+.vers-heb{direction:rtl;font-family:'Noto Serif Hebrew',serif;font-size:1rem;margin-bottom:.28rem;border-right:3px solid var(--gold-light);padding-right:.55rem;}
+.vers-fr{font-style:italic;color:var(--ink-light);font-size:.82rem;}
+.mots-list{padding:.65rem .9rem;display:flex;flex-direction:column;gap:.4rem;}
+.refrain-bar{text-align:center;font-style:italic;color:var(--gold);font-size:.78rem;letter-spacing:.1em;padding:.3rem;margin-bottom:.7rem;border:1px solid var(--border);background:rgba(138,107,32,.05);border-radius:4px;}
+
+/* MOT ROW */
+.mot-row{background:rgba(138,107,32,.04);border:1px solid rgba(138,107,32,.15);border-radius:5px;padding:.48rem .65rem;}
+.mot-top{display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;margin-bottom:.18rem;}
+.mot-heb{font-family:'Noto Serif Hebrew',serif;font-size:.98rem;font-weight:700;direction:rtl;}
+.mot-translit{font-style:italic;color:var(--gold);font-size:.76rem;}
+.mot-analyse{font-size:.78rem;color:var(--ink-light);line-height:1.45;}
+.mot-source{font-size:.7rem;color:var(--gold);font-style:italic;direction:rtl;font-family:'Noto Serif Hebrew',serif;margin-top:.12rem;opacity:.73;}
+
+/* CAT */
+.cat-section{margin-bottom:1.2rem;}
+.cat-head{display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem;padding-bottom:.3rem;border-bottom:1px solid var(--border);}
+.cat-name{font-size:.92rem;color:var(--ink);font-weight:600;}
+.cat-cnt{font-size:.73rem;color:var(--ink-light);font-style:italic;}
+.cat-items{display:flex;flex-direction:column;gap:.38rem;overflow:hidden;transition:max-height .3s ease,opacity .25s ease;max-height:2000px;opacity:1;}
+.cat-head{cursor:pointer;user-select:none;border-radius:4px;padding:.3rem .3rem;margin:0 -.3rem;transition:background .15s;-webkit-tap-highlight-color:transparent;}
+.cat-head:active{background:rgba(138,107,32,.1);}
+.cat-arrow{margin-left:auto;font-size:.72rem;color:var(--gold);transition:transform .25s;display:inline-block;}
+.cat-section.closed .cat-arrow{transform:rotate(-90deg);}
+.cat-section.closed .cat-items{max-height:0!important;opacity:0;}
+
+/* TAGS */
+.tag{display:inline-block;font-size:.63rem;padding:.04rem .38rem;border-radius:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;}
+.tag-nom  {background:#e8f0e8;color:var(--sage);  border:1px solid var(--sage);}
+.tag-verbe{background:#e8eef5;color:var(--blue);  border:1px solid var(--blue);}
+.tag-adj  {background:#f5ede8;color:var(--rust);  border:1px solid var(--rust);}
+.tag-prep {background:#f0ebe0;color:var(--gold);  border:1px solid var(--gold);}
+.tag-conj {background:#f0f0e0;color:var(--olive); border:1px solid #b0b020;}
+.tag-adv  {background:#eee8f0;color:var(--purple);border:1px solid var(--purple);}
+.tag-pron {background:#f5e8ee;color:#7a2040;      border:1px solid #b05070;}
+.tag-art  {background:#e8f0f5;color:var(--teal);  border:1px solid var(--teal);}
+.tag-part {background:#f5f0e0;color:#6a5010;      border:1px solid #b09030;}
+.tag-expr {background:#f0e8f5;color:#5a2070;      border:1px solid #9050b0;}
+
+/* LÉGENDE */
+.legend-row{display:flex;align-items:flex-start;gap:.6rem;padding:.5rem .3rem;border-bottom:1px solid rgba(138,107,32,.1);}
+.legend-row:last-child{border-bottom:none;}
+.legend-desc{font-size:.83rem;color:var(--ink-light);}
+
+/* BOTTOM NAV */
+.bottom-nav{flex-shrink:0;display:grid;grid-template-columns:repeat(3,1fr);background:var(--cream-dark);border-top:1px solid var(--border);padding-bottom:var(--safe-bottom);position:relative;z-index:10;}
+.bn-btn{background:none;border:none;padding:.55rem .2rem;display:flex;flex-direction:column;align-items:center;gap:.1rem;cursor:pointer;}
+.bn-icon{font-size:1.2rem;line-height:1;}
+.bn-label{font-size:.65rem;color:var(--ink-light);white-space:nowrap;}
+.bn-btn.active .bn-label{color:var(--gold);font-weight:600;}
+
+/* SCREENS */
+.screen{display:none;}
+.screen.active{display:block;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-heb">ג'רוזלם</div>
+  <div class="topbar-sub">הַדַּג נָחָשׁ · Analyse morphologique</div>
+</div>
+
+<div class="scroll-area" id="scrollArea">
+
+  <!-- INTRO -->
+  <div class="screen active" id="screenIntro">
+    <div class="intro-card">
+      <h3>על השיר — À propos</h3>
+      <p><strong>ג'רוזלם</strong> est la chanson-phare de l'album de début du <strong>הַדַּג נָחָשׁ</strong> (2000), groupe de hip-hop jérusalémite fondé par le rappeur-parolier <strong>שָׁאנָן סְטְרִיט</strong>.</p>
+      <p>La mélodie est empruntée à <strong>אַלְפָא בְּלוֹנְדִי</strong> (Alpha Blondy), le « Bob Marley de l'Afrique » ivoirien, dont le reggae <em>Jerusalem</em> (1986) mêlait hébreu, arabe, français et anglais. Shaanan Street a greffé sur cette mélodie un texte israélien contemporain : irrévérencieux, ancré dans la rue jérusalémite, mêlant formules liturgiques et argot du quotidien.</p>
+      <p>Le refrain bilingue <em>« Here I am / Je t'aime »</em> reprend les langues d'Alpha Blondy — un clin d'œil à la vocation multiculturelle de Jérusalem.</p>
+      <div class="facts">
+        <span class="fact">Album 2000 : המכונה של הגרוב</span>
+        <span class="fact">Mélodie : Alpha Blondy (1986)</span>
+        <span class="fact">Hip-hop · Reggae · Funk</span>
+        <span class="fact">Bilingue : עברית + français + anglais</span>
+      </div>
+    </div>
+    <p style="text-align:center;font-style:italic;color:var(--gold);font-size:.83rem;margin-top:.3rem;">→ Explore l'analyse avec les onglets en bas</p>
+  </div>
+
+  <!-- ANALYSE -->
+  <div class="screen" id="screenAnalyse">
+    <div class="strophe-picker" id="strophePicker"></div>
+    <div class="view-toggle">
+      <button class="vt-btn active" id="vtVers" onclick="setView('vers')">📜 Par vers</button>
+      <button class="vt-btn" id="vtCat" onclick="setView('cat')">🗂 Par catégorie</button>
+    </div>
+    <div id="analyseContent"></div>
+  </div>
+
+  <!-- LÉGENDE -->
+  <div class="screen" id="screenLegende">
+    <div style="padding:.2rem 0 1rem;">
+      <p style="font-size:.88rem;font-style:italic;color:var(--ink-light);margin-bottom:.9rem;">10 catégories grammaticales et stylistiques :</p>
+      <div id="legendeContent"></div>
+    </div>
+  </div>
+
+</div>
+
+<nav class="bottom-nav">
+  <button class="bn-btn active" onclick="goScreen('intro',this)"><span class="bn-icon">📖</span><span class="bn-label">Intro</span></button>
+  <button class="bn-btn" onclick="goScreen('analyse',this)"><span class="bn-icon">🔍</span><span class="bn-label">Analyse</span></button>
+  <button class="bn-btn" onclick="goScreen('legende',this)"><span class="bn-icon">🏷</span><span class="bn-label">Légende</span></button>
+</nav>
+
+<script>
+const STROPHES = [
+  {id:1,titre:"Refrain liturgique",heb:"בָּרוּךְ אַתָּה...",refrain:true,vers:[
+    {heb:"בָּרוּךְ אַתָּה אֲדֹנָי",fr:"Béni sois-tu, Seigneur",mots:[
+      {heb:"בָּרוּךְ",tl:"barukh",type:"adj",a:"Part. Qal passif de ב-ר-כ (bénir) — formule d'ouverture de toutes les bénédictions juives"},
+      {heb:"אַתָּה",tl:"ata",type:"pron",a:"Pronom 2ms : 'tu' — adresse directe à Dieu"},
+      {heb:"אֲדֹנָי",tl:"Adonaï",type:"nom",a:"'Mon Seigneur' — substitut liturgique du Tétragramme — ici à double sens : religieux et ironique"},
+    ]},
+    {heb:"בָּרוּךְ אַתָּה יְרוּשָׁלַיִם",fr:"Béni sois-tu, Jérusalem",mots:[
+      {heb:"בָּרוּךְ",tl:"barukh",type:"adj",a:"Répétition — formule liturgique détournée : bénédiction à la ville et non à Dieu"},
+      {heb:"יְרוּשָׁלַיִם",tl:"Yerushalaim",type:"nom",a:"Jérusalem — étym. יְרוּשָׁה (héritage) + שָׁלֵם (paix) — forme hébraïque au duel (-ַיִם)"},
+    ]},
+  ]},
+  {id:2,titre:"I — La ville du deal",heb:"אִם הָיָה לִי...",vers:[
+    {heb:"אִם הָיָה לִי כָּל פַּעַם שֶׁמִּישֶׁהוּ מַהַשְׁפָּלָה",fr:"Si j'avais un shekel à chaque fois que quelqu'un de la Hashpala",mots:[
+      {heb:"אִם",tl:"im",type:"conj",a:"Conjonction conditionnelle : 'si'"},
+      {heb:"הָיָה",tl:"haya",type:"verbe",a:"Qal passé 3ms de ה-י-ה — conditionnel irréel"},
+      {heb:"לִי",tl:"li",type:"prep",a:"לְ + suffix -י (moi) : 'pour moi'"},
+      {heb:"כָּל פַּעַם",tl:"kol pa'am",type:"expr",a:"'Chaque fois' — כֹּל (tout) + פַּעַם (fois)"},
+      {heb:"שֶׁ",tl:"she-",type:"part",a:"Particule subordonnante"},
+      {heb:"מִישֶׁהוּ",tl:"mishehu",type:"pron",a:"Pronom indéfini : 'quelqu'un'"},
+      {heb:"מַהַשְׁפָּלָה",tl:"mahashpala",type:"nom",a:"מִן+הַ+שְׁפָּלָה : quartier populaire de Jérusalem — argot pour zone défavorisée"},
+    ]},
+    {heb:"שָׁמַע שֶׁאֲנִי יְרוּשַׁלְמִי וְחִשֵּׁב שֶׁאֲנִי מְשׁוּגָע",fr:"A entendu que je suis Jérusalémite et a cru que j'étais fou",mots:[
+      {heb:"שָׁמַע",tl:"shama",type:"verbe",a:"Qal passé 3ms de שׁ-מ-ע (entendre)"},
+      {heb:"יְרוּשַׁלְמִי",tl:"yerushalmi",type:"adj",a:"Gentilé masc. : 'Jérusalémite' — יְרוּשָׁלַיִם + suffix -י"},
+      {heb:"וְחִשֵּׁב",tl:"vekhishev",type:"verbe",a:"Pi'el passé 3ms de ח-שׁ-ב (penser, calculer)"},
+      {heb:"מְשׁוּגָע",tl:"meshuga",type:"adj",a:"'Fou, cinglé' — Pu'al participe de שׁ-ג-ע — très courant en hébreu familier"},
+    ]},
+    {heb:"הָיִיתִי עָשִׁיר כְּמוֹ רָאפָרִים לְיַד לִים",fr:"Je serais riche comme des rappeurs à côté de Lim",mots:[
+      {heb:"הָיִיתִי",tl:"hayiti",type:"verbe",a:"Qal passé 1ms de ה-י-ה — apodose conditionnelle"},
+      {heb:"עָשִׁיר",tl:"ashir",type:"adj",a:"Adj. masc. sing. : riche — racine ע-שׁ-ר"},
+      {heb:"כְּמוֹ",tl:"kmo",type:"prep",a:"Préposition comparative : 'comme'"},
+      {heb:"רָאפָרִים",tl:"rafarim",type:"nom",a:"Plur. de רָאפָּר (rappeur) — emprunt à l'anglais rapper"},
+      {heb:"לְיַד",tl:"leyad",type:"prep",a:"'À côté de, près de'"},
+      {heb:"לִים",tl:"Lim",type:"nom",a:"Le rappeur français LIM — référence au hip-hop mondial"},
+    ]},
+    {heb:"לוֹבֵשׁ עַרְמָה שֶׁל זָהָב יְהַלּוֹמִים בְּחִינָּם",fr:"Portant un tas de diamants d'or gratuitement",mots:[
+      {heb:"לוֹבֵשׁ",tl:"lovesh",type:"verbe",a:"Qal participe de ל-ב-שׁ (porter/vêtir) — présent/gérondif"},
+      {heb:"עַרְמָה",tl:"arma",type:"nom",a:"Tas, amas — racine ע-ר-מ"},
+      {heb:"שֶׁל",tl:"shel",type:"part",a:"Particule possessive/de relation : 'de'"},
+      {heb:"זָהָב",tl:"zahav",type:"nom",a:"Or — terme biblique"},
+      {heb:"יְהַלּוֹמִים",tl:"yehalomin",type:"nom",a:"Plur. de יְהַלֹם (diamant)"},
+      {heb:"בְּחִינָּם",tl:"bekhinam",type:"adv",a:"'Gratuitement, pour rien' — בְּ + חִינָּם"},
+    ]},
+    {heb:"אֲבָל הַדַּג נָחָשׁ מַפְצִיצִים אֶתְכֶם",fr:"Mais le Hadag Nahash vous fait exploser",mots:[
+      {heb:"אֲבָל",tl:"aval",type:"conj",a:"'Mais' — adversatif"},
+      {heb:"הַדַּג נָחָשׁ",tl:"hadagnakhash",type:"nom",a:"'Le Poisson Serpent' — nom propre/jeu de mots (נחשׁ=serpent/ניחוש=devinette)"},
+      {heb:"מַפְצִיצִים",tl:"maftsiitsim",type:"verbe",a:"Hif'il présent masc. plur. de פ-צ-צ (exploser) — argot : 'déchirer, envoyer du lourd'"},
+      {heb:"אֶתְכֶם",tl:"etkhem",type:"pron",a:"Pronom 2mp objet : 'vous (tous)'"},
+    ]},
+    {heb:"זֶה יוֹצֵא מֵאִיתָּנוּ מַגִּיעַ אֲלֵיכֶם",fr:"Ça sort de chez nous, ça vous parvient",mots:[
+      {heb:"זֶה",tl:"ze",type:"pron",a:"Démonstratif masc. : 'ceci, ça'"},
+      {heb:"יוֹצֵא",tl:"yotse",type:"verbe",a:"Qal participe de י-צ-א (sortir) — présent"},
+      {heb:"מֵאִיתָּנוּ",tl:"me'itanu",type:"prep",a:"מִן + אִיתָּנוּ : 'de chez nous'"},
+      {heb:"מַגִּיעַ",tl:"magi'a",type:"verbe",a:"Hif'il participe de נ-ג-ע (atteindre) — présent"},
+      {heb:"אֲלֵיכֶם",tl:"aleikhem",type:"prep",a:"אֶל + -כֶם : 'vers vous'"},
+    ]},
+    {heb:"וְחוֹזֵר חָלִילָה הָלוֹךְ וְשׁוֹב",fr:"Et revient — allez-retour (à Dieu ne plaise)",mots:[
+      {heb:"וְחוֹזֵר",tl:"vekhozér",type:"verbe",a:"Qal participe de ח-ז-ר (revenir) — présent"},
+      {heb:"חָלִילָה",tl:"khalila",type:"adv",a:"'À Dieu ne plaise !' — mise en garde ironique ici"},
+      {heb:"הָלוֹךְ וְשׁוֹב",tl:"halokh veshov",type:"expr",a:"'Aller-retour, va-et-vient' — inf. abs. de ה-ל-כ + שׁ-ו-ב"},
+    ]},
+    {heb:"הַשְׂרָאָה אֲנִי מְקַבֵּל מֵהָרְחוֹב מִזּוּהָר אַרְגּוֹב",fr:"L'inspiration je la reçois de la rue, de Zohar Argov",mots:[
+      {heb:"הַשְׂרָאָה",tl:"hasra'a",type:"nom",a:"L'inspiration — nominalisation Hif'il"},
+      {heb:"מְקַבֵּל",tl:"mekabel",type:"verbe",a:"Pi'el participe de ק-ב-ל (recevoir) — présent"},
+      {heb:"מֵהָרְחוֹב",tl:"meharkhov",type:"nom",a:"מִן+הַ+רְחוֹב : 'de la rue'"},
+      {heb:"מִזּוּהָר אַרְגּוֹב",tl:"mi-Zohar Argov",type:"nom",a:"Chanteur yéménite (1955–1987), légende de la musique mizrahim, mort en prison — icône populaire"},
+    ]},
+  ]},
+  {id:3,titre:"II — La scène",heb:"לֹא מַגִּידִי...",vers:[
+    {heb:"לֹא מַגִּידִי גּוֹב אוֹ מָתִי כַּסְפִּי",fr:"Je ne suis pas Magidi Gob ni Mati Caspi",mots:[
+      {heb:"לֹא",tl:"lo",type:"adv",a:"Négation absolue"},
+      {heb:"מָתִי כַּסְפִּי",tl:"Mati Caspi",type:"nom",a:"Chanteur-compositeur israélien — contraste de registres musicaux"},
+    ]},
+    {heb:"מְבִיא אוֹתָהּ דּוּגְרִי יָשִׁיר לִפְעָמִים אֲפִילוּ דַּרְסְטִי",fr:"Je l'amène direct, droit, parfois même drastiquement",mots:[
+      {heb:"מְבִיא",tl:"mevi",type:"verbe",a:"Hif'il participe de ב-ו-א (apporter)"},
+      {heb:"אוֹתָהּ",tl:"otah",type:"pron",a:"Pronom 3fs objet : 'la' (la musique/inspiration)"},
+      {heb:"דּוּגְרִי",tl:"dugri",type:"adv",a:"Arabe/turc → hébreu : 'directement, franchement' — très courant en hébreu familier"},
+      {heb:"יָשִׁיר",tl:"yasher",type:"adv",a:"'Droit, direct' — racine י-שׁ-ר"},
+      {heb:"לִפְעָמִים",tl:"lif'amim",type:"adv",a:"'Parfois'"},
+      {heb:"אֲפִילוּ",tl:"afilu",type:"adv",a:"'Même, y compris'"},
+      {heb:"דַּרְסְטִי",tl:"darasti",type:"adj",a:"Emprunt : 'drastique' — rime avec אֶלְסְטִי / פַנְטַסְטִי"},
+    ]},
+    {heb:"תָּמִיד אֶלְסְטִי תָּמִיד פַנְטַסְטִי",fr:"Toujours élastique, toujours fantastique",mots:[
+      {heb:"תָּמִיד",tl:"tamid",type:"adv",a:"'Toujours' — anaphore rhétorique (répété deux fois)"},
+      {heb:"אֶלְסְטִי",tl:"elasti",type:"adj",a:"'Élastique, flexible' — emprunt"},
+      {heb:"פַנְטַסְטִי",tl:"fantasti",type:"adj",a:"'Fantastique' — emprunt — rime interne"},
+    ]},
+    {heb:"קָשׁוּר לַפָּאבִים לַחֲמוּרוֹת לַשּׁוּק וְכֵן",fr:"Lié aux pubs, aux falafel, au marché et oui",mots:[
+      {heb:"קָשׁוּר",tl:"kashur",type:"adj",a:"Part. Qal passif de ק-שׁ-ר : 'lié, connecté'"},
+      {heb:"לַפָּאבִים",tl:"lapabim",type:"nom",a:"לְ+הַ+פָּאבִים : plur. de פָּאב (pub) — emprunt anglais"},
+      {heb:"לַחֲמוּרוֹת",tl:"lakhamurot",type:"nom",a:"לְ+הַ+חֲמוּרוֹת : 'aux ânesses/boulettes' — argot double sens : falafel / filles"},
+      {heb:"לַשּׁוּק",tl:"lashuk",type:"nom",a:"'Au marché' — Mahane Yehuda à Jérusalem"},
+      {heb:"וְכֵן",tl:"vekhen",type:"adv",a:"'Et oui' — confirmation"},
+    ]},
+    {heb:"נִשְׂרוֹף אֶת הַבָּמָה נוֹצִיא מַהֲשָׁגֵרָה",fr:"On va brûler la scène, sortir de la routine",mots:[
+      {heb:"נִשְׂרוֹף",tl:"nisrof",type:"verbe",a:"Qal futur 1pl de שׂ-ר-ף (brûler) — argot : 'déchirer la scène'"},
+      {heb:"אֶת הַבָּמָה",tl:"et habama",type:"nom",a:"Accusatif + article + בָּמָה (scène)"},
+      {heb:"נוֹצִיא",tl:"notsi",type:"verbe",a:"Hif'il futur 1pl de י-צ-א (faire sortir)"},
+      {heb:"מַהֲשָׁגֵרָה",tl:"mehashgara",type:"nom",a:"מִן+הַ+שְׁגֵרָה : 'hors de la routine' — שְׁגֵרָה = train-train quotidien"},
+    ]},
+    {heb:"עַד שֶׁתִּהְיֶה מְסוּטָּת עַד שֶׁתִּהְיֶה מְרוּצָה",fr:"Jusqu'à ce que tu sois dingue, jusqu'à ce que tu sois satisfaite",mots:[
+      {heb:"עַד שֶׁ",tl:"ad she-",type:"conj",a:"'Jusqu'à ce que' — locution conjonctive"},
+      {heb:"תִּהְיֶה",tl:"tihye",type:"verbe",a:"Qal futur de ה-י-ה (être)"},
+      {heb:"מְסוּטָּת",tl:"mesuta",type:"adj",a:"Fém. : 'déjantée, dingue' — argot — Pu'al de שׁ-ט-ה"},
+      {heb:"מְרוּצָה",tl:"merutsa",type:"adj",a:"Fém. : 'satisfaite, heureuse' — Pu'al de ר-צ-ה"},
+    ]},
+  ]},
+  {id:4,titre:"Refrain — Here I am",heb:"ג'רוזלם...",refrain:true,vers:[
+    {heb:"ג'רוזלם — Here I am",fr:"Jérusalem — Me voici",mots:[
+      {heb:"ג'רוזלם",tl:"Jerusalem",type:"nom",a:"Translittération anglophone — coexistence des trois langues dans le refrain"},
+      {heb:"Here I am",tl:"Here I am",type:"expr",a:"Anglais : 'me voici' — résonance biblique de הִנֵּנִי (Gn 22:1)"},
+    ]},
+    {heb:"ג'רוזלם — Je t'aime",fr:"Jérusalem — Je t'aime",mots:[
+      {heb:"Je t'aime",tl:"Je t'aime",type:"expr",a:"Français — déclaration d'amour à la ville, clin d'œil à Alpha Blondy qui mêlait déjà plusieurs langues"},
+    ]},
+  ]},
+  {id:5,titre:"III — Art de Jérusalem",heb:"אוֹמָנוּת...",vers:[
+    {heb:"אוֹמָנוּת יְרוּשַׁלְמִית שִׁירָה וְצִיּוּר",fr:"Art jérusalémite, chant et peinture",mots:[
+      {heb:"אוֹמָנוּת",tl:"omanut",type:"nom",a:"Art, artisanat — racine א-מ-נ (être habile/fidèle)"},
+      {heb:"יְרוּשַׁלְמִית",tl:"yerushalmi",type:"adj",a:"Adj. gentilé fém. : 'jérusalémite' — accord avec אוֹמָנוּת"},
+      {heb:"שִׁירָה",tl:"shira",type:"nom",a:"Poésie, chant — racine שׁ-י-ר"},
+      {heb:"וְצִיּוּר",tl:"vetsiyur",type:"nom",a:"וְ + צִיּוּר : peinture, illustration — racine צ-י-ר"},
+    ]},
+    {heb:"יֵשׁ סוֹפְרִים מַסְפְּרִי סִיפּוּר JD רִיקּוּד פִּיסּוּל",fr:"Il y a des écrivains, des conteurs, JD, danse, sculpture",mots:[
+      {heb:"יֵשׁ",tl:"yesh",type:"part",a:"Existentiel : 'il y a'"},
+      {heb:"סוֹפְרִים",tl:"sofrim",type:"nom",a:"Plur. de סוֹפֵר (écrivain, scribe) — racine ס-פ-ר"},
+      {heb:"מַסְפְּרִי",tl:"masperi",type:"nom",a:"État construit plur. de מְסַפֵּר (conteur) — Pi'el"},
+      {heb:"סִיפּוּר",tl:"sipur",type:"nom",a:"Histoire, récit — Pi'el nominalisation de ס-פ-ר"},
+      {heb:"רִיקּוּד",tl:"rikud",type:"nom",a:"Danse — racine ר-ק-ד"},
+      {heb:"פִּיסּוּל",tl:"pisul",type:"nom",a:"Sculpture — Pi'el nominalisation de פ-ס-ל"},
+    ]},
+  ]},
+];
+
+const LEGENDE = [
+  {type:'verbe',label:'Verbe',desc:'Forme conjuguée, infinitif ou participe. Précisions : binyan (Qal, Pi\'el, Hif\'il, Nif\'al, Pu\'al…), temps, personne, genre, nombre.'},
+  {type:'nom',label:'Nom',desc:'Nom commun ou propre. Genre (m./f.), nombre (sing./plur.), état (absolu ou construit), suffixes possessifs.'},
+  {type:'adj',label:'Adjectif',desc:'Qualificatif ou prédicatif. Accord en genre et nombre. Inclut les participes employés comme adjectifs.'},
+  {type:'adv',label:'Adverbe',desc:'Mot invariable modifiant verbe, adjectif ou phrase. Catégories : temps, intensité, restriction, affirmation.'},
+  {type:'prep',label:'Préposition',desc:'Relation de lieu, direction, appartenance, moyen, comparaison. Souvent fusionnée au mot suivant.'},
+  {type:'conj',label:'Conjonction',desc:'Liaison entre propositions : coordination (וְ), subordination (כִּי, אִם), opposition (אֲבָל, אַךְ).'},
+  {type:'pron',label:'Pronom',desc:'Personnel, démonstratif ou indéfini. Peut être suffix (collé au nom/verbe) ou indépendant.'},
+  {type:'art',label:'Article',desc:'Article défini הַ et ses variantes phonétiques selon la consonne initiale du mot suivant.'},
+  {type:'part',label:'Particule',desc:'Fonctionnels non classés : accusatif אֶת, relatif שֶׁ, existentiel יֵשׁ, possessif שֶׁל, négatif לֹא.'},
+  {type:'expr',label:'Expression',desc:'Locutions figées, emprunts multi-lingues (anglais, français, arabe, turc), jeux de mots et références culturelles.'},
+];
+
+const TAGS={nom:'tag-nom',verbe:'tag-verbe',adj:'tag-adj',prep:'tag-prep',conj:'tag-conj',adv:'tag-adv',pron:'tag-pron',art:'tag-art',part:'tag-part',expr:'tag-expr'};
+const LABELS={nom:'Nom',verbe:'Verbe',adj:'Adj.',prep:'Prép.',conj:'Conj.',adv:'Adv.',pron:'Pron.',art:'Art.',part:'Part.',expr:'Expr.'};
+const CAT_ORDER=['verbe','nom','adj','adv','prep','conj','pron','art','part','expr'];
+const CAT_NAMES={verbe:'Verbes',nom:'Noms',adj:'Adjectifs',adv:'Adverbes',prep:'Prépositions',conj:'Conjonctions',pron:'Pronoms',art:'Articles',part:'Particules',expr:'Expressions & emprunts'};
+
+let currentStrophe=1, currentView='vers';
+
+function tag(type){return `<span class="tag ${TAGS[type]||'tag-nom'}">${LABELS[type]||type}</span>`;}
+
+function motHtml(m,showSrc=false){return `<div class="mot-row"><div class="mot-top"><span class="mot-heb">${m.heb}</span><span class="mot-translit">${m.tl}</span>${tag(m.type)}</div><div class="mot-analyse">${m.a}</div>${showSrc&&m._vers?`<div class="mot-source">${m._vers}</div>`:''}</div>`;}
+
+function renderVers(s){
+  let o=s.refrain?'<div class="refrain-bar">— Refrain —</div>':'';
+  o+=s.vers.map(v=>`<div class="vers-card"><div class="vers-head"><div class="vers-heb">${v.heb}</div><div class="vers-fr">${v.fr}</div></div><div class="mots-list">${v.mots.map(m=>motHtml(m,false)).join('')}</div></div>`).join('');
+  return o;
+}
+
+function renderCat(s){
+  const bt={};
+  s.vers.forEach(v=>v.mots.forEach(m=>{if(!bt[m.type])bt[m.type]=[];bt[m.type].push({...m,_vers:v.heb});}));
+  return CAT_ORDER.filter(t=>bt[t]&&bt[t].length>0).map(t=>`<div class="cat-section" data-type="${t}"><div class="cat-head" onclick="toggleCat(this.closest('.cat-section'))">${tag(t)}<span class="cat-name">${CAT_NAMES[t]}</span><span class="cat-cnt">${bt[t].length}</span><span class="cat-arrow">▼</span></div><div class="cat-items">${bt[t].map(m=>motHtml(m,true)).join('')}</div></div>`).join('');
+}
+
+function toggleCat(section){section.classList.toggle('closed');}
+
+// Build picker
+const picker=document.getElementById('strophePicker');
+STROPHES.forEach(s=>{
+  const b=document.createElement('button');
+  b.className='sp-btn'+(s.id===1?' active':'');
+  b.dataset.id=s.id; b.textContent=s.titre;
+  b.onclick=()=>{currentStrophe=s.id;document.querySelectorAll('.sp-btn').forEach(x=>x.classList.toggle('active',parseInt(x.dataset.id)===currentStrophe));renderAnalyse();document.getElementById('scrollArea').scrollTop=0;};
+  picker.appendChild(b);
+});
+
+function renderAnalyse(){
+  const s=STROPHES.find(x=>x.id===currentStrophe);
+  document.getElementById('analyseContent').innerHTML=currentView==='vers'?renderVers(s):renderCat(s);
+}
+
+function setView(v){
+  currentView=v;
+  document.getElementById('vtVers').classList.toggle('active',v==='vers');
+  document.getElementById('vtCat').classList.toggle('active',v==='cat');
+  renderAnalyse();
+  document.getElementById('scrollArea').scrollTop=0;
+}
+
+function goScreen(name,btn){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.bn-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('screen'+name.charAt(0).toUpperCase()+name.slice(1)).classList.add('active');
+  btn.classList.add('active');
+  document.getElementById('scrollArea').scrollTop=0;
+  if(name==='analyse')renderAnalyse();
+}
+
+// Légende
+document.getElementById('legendeContent').innerHTML=LEGENDE.map(l=>`<div class="legend-row">${tag(l.type)}<div><strong>${l.label}</strong><div class="legend-desc">${l.desc}</div></div></div>`).join('');
+
+renderAnalyse();
+</script>
+</body>
+</html>

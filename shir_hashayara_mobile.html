@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="שיר השיירה">
+<link rel="icon" type="image/png" sizes="192x192" href="https://moty31700.github.io/assets/icon-192.png">
+<link rel="shortcut icon" href="https://moty31700.github.io/assets/icon-192.png">
+<title>שיר השיירה</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Hebrew:wght@300;400;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #f5f0e8;
+  --cream-dark: #ece5d5;
+  --ink: #2c1f0e;
+  --ink-light: #5a3e28;
+  --gold: #9a7b2f;
+  --gold-light: #c4a24a;
+  --rust: #8b3a1a;
+  --sage: #3d5c36;
+  --blue: #1a3a5c;
+  --purple: #5a3a7a;
+  --teal: #2a5a6a;
+  --border: rgba(154,123,47,0.28);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-top: env(safe-area-inset-top, 0px);
+}
+
+* { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+
+html,body { height:100%; overflow:hidden; background:var(--cream); }
+
+body {
+  font-family:'Crimson Pro',serif;
+  color:var(--ink);
+  display:flex;
+  flex-direction:column;
+  height:100svh;
+}
+
+/* Texture */
+body::before {
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+}
+
+/* ─── TOP BAR ─── */
+.topbar {
+  flex-shrink:0;
+  background:linear-gradient(to bottom, var(--cream-dark), var(--cream));
+  border-bottom:2px solid var(--gold);
+  padding:calc(var(--safe-top) + .5rem) 1rem .6rem;
+  text-align:center;
+  position:relative;
+  z-index:10;
+}
+.topbar-heb {
+  font-family:'Noto Serif Hebrew',serif;
+  font-size:1.4rem;
+  font-weight:700;
+  direction:rtl;
+  line-height:1.2;
+}
+.topbar-fr {
+  font-size:.78rem;
+  font-style:italic;
+  color:var(--ink-light);
+  letter-spacing:.04em;
+}
+
+/* ─── SCROLL AREA ─── */
+.scroll-area {
+  flex:1;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior:contain;
+  position:relative;
+  z-index:1;
+  padding:1rem 1rem 1.5rem;
+}
+
+/* ─── INTRO ─── */
+.intro-card {
+  background:linear-gradient(135deg,rgba(154,123,47,.09),rgba(154,123,47,.03));
+  border:1px solid var(--border);
+  border-left:4px solid var(--gold);
+  border-radius:6px;
+  padding:1.1rem 1rem;
+  margin-bottom:1rem;
+  font-size:.9rem;
+  line-height:1.6;
+}
+.intro-card h3 {
+  font-family:'Noto Serif Hebrew',serif;
+  font-size:1rem;
+  color:var(--gold);
+  margin-bottom:.6rem;
+  direction:rtl;
+}
+.intro-card p { margin-bottom:.5rem; }
+.intro-card p:last-child { margin-bottom:0; }
+.facts { display:flex; flex-wrap:wrap; gap:.3rem; margin-top:.5rem; }
+.fact { background:rgba(154,123,47,.1); border:1px solid var(--border); border-radius:3px; padding:.1rem .45rem; font-size:.75rem; color:var(--ink-light); font-style:italic; }
+
+/* ─── STROPHE PICKER ─── */
+.strophe-picker {
+  display:flex;
+  overflow-x:auto;
+  gap:.4rem;
+  padding:.3rem 0 .5rem;
+  margin-bottom:.8rem;
+  scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+}
+.strophe-picker::-webkit-scrollbar { display:none; }
+.sp-btn {
+  flex-shrink:0;
+  background:none;
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:.3rem .85rem;
+  font-family:'Crimson Pro',serif;
+  font-size:.82rem;
+  color:var(--ink-light);
+  cursor:pointer;
+  white-space:nowrap;
+  transition:all .18s;
+}
+.sp-btn.active {
+  background:var(--gold);
+  color:var(--cream);
+  border-color:var(--gold);
+}
+
+/* ─── VIEW TOGGLE ─── */
+.view-toggle {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:.4rem;
+  margin-bottom:1rem;
+}
+.vt-btn {
+  background:none;
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:.45rem .5rem;
+  font-family:'Crimson Pro',serif;
+  font-size:.85rem;
+  cursor:pointer;
+  color:var(--ink-light);
+  transition:all .18s;
+  text-align:center;
+}
+.vt-btn.active {
+  background:var(--ink);
+  color:var(--cream);
+  border-color:var(--ink);
+}
+
+/* ─── VERS CARD ─── */
+.vers-card {
+  background:var(--cream);
+  border:1px solid var(--border);
+  border-radius:8px;
+  margin-bottom:.8rem;
+  overflow:hidden;
+  box-shadow:0 1px 6px rgba(44,31,14,.07);
+}
+.vers-head {
+  padding:.8rem 1rem;
+  border-bottom:1px solid rgba(154,123,47,.12);
+}
+.vers-heb {
+  direction:rtl;
+  font-family:'Noto Serif Hebrew',serif;
+  font-size:1.05rem;
+  font-weight:400;
+  margin-bottom:.3rem;
+  border-right:3px solid var(--gold-light);
+  padding-right:.6rem;
+}
+.vers-fr {
+  font-style:italic;
+  color:var(--ink-light);
+  font-size:.85rem;
+}
+.mots-list {
+  padding:.7rem .9rem;
+  display:flex;
+  flex-direction:column;
+  gap:.45rem;
+}
+
+/* ─── MOT ROW (mobile) ─── */
+.mot-row {
+  background:rgba(154,123,47,.04);
+  border:1px solid rgba(154,123,47,.15);
+  border-radius:5px;
+  padding:.5rem .7rem;
+}
+.mot-top { display:flex; align-items:center; gap:.4rem; flex-wrap:wrap; margin-bottom:.2rem; }
+.mot-heb { font-family:'Noto Serif Hebrew',serif; font-size:1rem; font-weight:700; direction:rtl; }
+.mot-translit { font-style:italic; color:var(--gold); font-size:.78rem; }
+.mot-analyse { font-size:.8rem; color:var(--ink-light); line-height:1.45; }
+.mot-source { font-size:.72rem; color:var(--gold); font-style:italic; direction:rtl; font-family:'Noto Serif Hebrew',serif; margin-top:.15rem; opacity:.75; }
+
+/* ─── CAT SECTION ─── */
+.cat-section { margin-bottom:1.3rem; }
+.cat-head {
+  display:flex;
+  align-items:center;
+  gap:.5rem;
+  padding:.35rem .3rem;
+  margin:0 -.3rem;
+  border-bottom:1px solid var(--border);
+  cursor:pointer;
+  user-select:none;
+  border-radius:4px;
+  transition:background .15s;
+  -webkit-tap-highlight-color:transparent;
+}
+.cat-head:active { background:rgba(154,123,47,.1); }
+.cat-head .cat-name { font-size:.95rem; color:var(--ink); font-weight:600; }
+.cat-head .cat-cnt { font-size:.75rem; color:var(--ink-light); font-style:italic; }
+.cat-arrow { margin-left:auto; font-size:.72rem; color:var(--gold); transition:transform .25s; display:inline-block; }
+.cat-section.closed .cat-arrow { transform:rotate(-90deg); }
+.cat-items { display:flex; flex-direction:column; gap:.4rem; overflow:hidden; transition:max-height .3s ease,opacity .25s ease; max-height:2000px; opacity:1; }
+.cat-section.closed .cat-items { max-height:0!important; opacity:0; }
+
+/* ─── TAGS ─── */
+.tag { display:inline-block; font-size:.65rem; padding:.04rem .4rem; border-radius:10px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; }
+.tag-nom    { background:#e8f0e8; color:var(--sage);   border:1px solid var(--sage); }
+.tag-verbe  { background:#e8eef5; color:var(--blue);   border:1px solid var(--blue); }
+.tag-adj    { background:#f5ede8; color:var(--rust);   border:1px solid var(--rust); }
+.tag-prep   { background:#f0ebe0; color:var(--gold);   border:1px solid var(--gold); }
+.tag-conj   { background:#f0f0e0; color:#7a7020;       border:1px solid #c0b040; }
+.tag-adv    { background:#eee8f0; color:var(--purple); border:1px solid var(--purple); }
+.tag-pron   { background:#f5e8ee; color:#8b2a4a;       border:1px solid #c06080; }
+.tag-art    { background:#e8f0f5; color:var(--teal);   border:1px solid var(--teal); }
+.tag-part   { background:#f5f0e0; color:#7a6020;       border:1px solid #c0a040; }
+
+/* ─── BOTTOM NAV ─── */
+.bottom-nav {
+  flex-shrink:0;
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  background:var(--cream-dark);
+  border-top:1px solid var(--border);
+  padding-bottom:var(--safe-bottom);
+  position:relative;
+  z-index:10;
+}
+.bn-btn {
+  background:none;
+  border:none;
+  padding:.55rem .2rem;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:.1rem;
+  cursor:pointer;
+  font-family:'Crimson Pro',serif;
+}
+.bn-icon { font-size:1.1rem; line-height:1; }
+.bn-label {
+  font-size:.62rem;
+  color:var(--ink-light);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  max-width:58px;
+  text-align:center;
+}
+.bn-btn.active .bn-icon { filter:sepia(1) saturate(2) hue-rotate(-10deg); }
+.bn-btn.active .bn-label { color:var(--gold); font-weight:600; }
+
+/* ─── LEGEND SHEET ─── */
+.legend-sheet {
+  display:none;
+  flex-direction:column;
+  gap:.5rem;
+  padding:.5rem 0;
+}
+.legend-sheet.active { display:flex; }
+.legend-row {
+  display:flex;
+  align-items:flex-start;
+  gap:.6rem;
+  padding:.5rem .3rem;
+  border-bottom:1px solid rgba(154,123,47,.1);
+}
+.legend-row:last-child { border-bottom:none; }
+.legend-desc { font-size:.85rem; color:var(--ink-light); }
+
+/* ─── SCREENS ─── */
+.screen { display:none; }
+.screen.active { display:block; }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-heb">שיר השיירה</div>
+  <div class="topbar-fr">Le Chant de la Caravane · Analyse morphologique</div>
+</div>
+
+<!-- SCROLL AREA -->
+<div class="scroll-area" id="scrollArea">
+
+  <!-- SCREEN : INTRO -->
+  <div class="screen active" id="screenIntro">
+    <div class="intro-card">
+      <h3>על השיר — À propos de la chanson</h3>
+      <p><strong>שיר השיירה</strong> est l'une des chansons les plus aimées d'<strong>אָרִיק אַיינְשְׁטַיין</strong> (1939–2013). Paroles de <strong>עָלִי מוֹהָר</strong>, mélodie grecque populaire, arrangements de <strong>מִיקִי גַּבְּרִיאֵלוֹב</strong>.</p>
+      <p>Publiée en <strong>1987</strong> sur l'album <em>« עַל גְּבוּל הָאוֹר »</em>, elle rassemble aux enregistrements le musicien <strong>יְהוּדָה פּוֹלִיקֵר</strong> et le violoniste <strong>מִירֶל רֶזְנִיק</strong>.</p>
+      <p>Ali Mohar voulait recapter l'enthousiasme patriotique de la génération de son père — et pensait que l'Israël des années 80 l'accueillerait avec scepticisme. Il s'est trompé : la chanson est devenue un classique.</p>
+      <p><strong>Thèmes :</strong> l'immigration (עַלִיָּה), le rassemblement des diasporas (קִיבּוּץ גָּלֻיּוֹת), la renaissance de la langue hébraïque, la continuité entre pionniers et Israéliens d'aujourd'hui.</p>
+      <div class="facts">
+        <span class="fact">Album 1987 : עַל גְּבוּל הָאוֹר</span>
+        <span class="fact">Clip KKL : archives pionniers</span>
+        <span class="fact">Mélodie : air grec populaire</span>
+        <span class="fact">יהודה פוליקר · מירל רזניק</span>
+      </div>
+      <p style="margin-top:.7rem; font-size:.82rem; color:var(--ink-light);">Le <strong>קֶרֶן קַיֶּמֶת לְיִשְׂרָאֵל (KKL)</strong> a produit un clip accompagnant le texte d'archives photographiques sur les vagues d'immigration et les chantiers pionniers, très utilisé dans les écoles israéliennes.</p>
+    </div>
+    <p style="text-align:center;font-style:italic;color:var(--gold);font-size:.85rem;margin-top:.3rem;">→ Utilisez les onglets en bas pour explorer l'analyse</p>
+  </div>
+
+  <!-- SCREEN : ANALYSE -->
+  <div class="screen" id="screenAnalyse">
+    <div class="strophe-picker" id="strophePicker"></div>
+    <div class="view-toggle">
+      <button class="vt-btn active" id="vtVers" onclick="setView('vers')">📜 Par vers</button>
+      <button class="vt-btn" id="vtCat" onclick="setView('cat')">🗂 Par catégorie</button>
+    </div>
+    <div id="analyseContent"></div>
+  </div>
+
+  <!-- SCREEN : LÉGENDE -->
+  <div class="screen" id="screenLegende">
+    <div style="padding:.2rem 0 1rem;">
+      <p style="font-size:.9rem;font-style:italic;color:var(--ink-light);margin-bottom:1rem;">Les 9 catégories grammaticales utilisées dans cette analyse :</p>
+      <div id="legendeContent"></div>
+    </div>
+  </div>
+
+</div><!-- end scroll-area -->
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="bn-btn active" data-screen="intro" onclick="goScreen('intro',this)">
+    <span class="bn-icon">📖</span><span class="bn-label">Intro</span>
+  </button>
+  <button class="bn-btn" data-screen="analyse" onclick="goScreen('analyse',this)">
+    <span class="bn-icon">🔍</span><span class="bn-label">Analyse</span>
+  </button>
+  <button class="bn-btn" data-screen="legende" onclick="goScreen('legende',this)">
+    <span class="bn-icon">🏷</span><span class="bn-label">Légende</span>
+  </button>
+</nav>
+
+<script>
+// ═══════════════════════════════════════════════
+// DONNÉES
+// ═══════════════════════════════════════════════
+const STROPHES = [
+  {
+    id:1, titre:"I — Arrivée", heb:"בִּלְשׁוֹנוֹת...",
+    vers:[
+      { heb:"בִּלְשׁוֹנוֹת רַבּוֹת מִסְּפֹר דִּבַּרְנוּ", fr:"En de nombreuses langues, nous avons parlé",
+        mots:[
+          {heb:"בִּ",        tl:"bi-",       type:"prep", a:"Préposition בְּ (en) + assimilation dagesh devant שׁ"},
+          {heb:"לְשׁוֹנוֹת", tl:"leshonot",  type:"nom",  a:"Plur. fém. de לָשׁוֹן (langue) — racine ל-שׁ-נ"},
+          {heb:"רַבּוֹת",    tl:"rabot",     type:"adj",  a:"Adj. fém. plur. de רַב (nombreux)"},
+          {heb:"מִסְּפֹר",   tl:"mispor",    type:"prep", a:"מִן + infin. absolu de ס-פ-ר : 'plus qu'on ne peut compter'"},
+          {heb:"דִּבַּרְנוּ", tl:"dibarnu",   type:"verbe",a:"Pi'el passé 1pl. de ד-ב-ר (parler)"},
+        ]},
+      { heb:"וְזֶה אֶת זֶה כִּמְעַט בִּכְלַל שֶׁלֹּא הִכַּרְנוּ", fr:"Et les uns les autres, nous ne nous connaissions presque pas du tout",
+        mots:[
+          {heb:"וְ",          tl:"ve-",       type:"conj", a:"Conjonction de coordination (et)"},
+          {heb:"זֶה אֶת זֶה", tl:"ze et ze",  type:"pron", a:"Locution réciproque : 'l'un l'autre' (אֶת = accusatif)"},
+          {heb:"כִּמְעַט",    tl:"kim'at",    type:"adv",  a:"'Presque, à peine'"},
+          {heb:"בִּכְלַל",    tl:"bikhlal",   type:"adv",  a:"'Du tout' (avec שֶׁלֹּא)"},
+          {heb:"שֶׁלֹּא",     tl:"shelo",     type:"part", a:"Particule négative relative : שֶׁ + לֹא"},
+          {heb:"הִכַּרְנוּ",  tl:"hikkarnu",  type:"verbe",a:"Hif'il passé 1pl. de נ-כ-ר (reconnaître)"},
+        ]},
+      { heb:"וּמְקוֹמוֹת רַבִּים מְאוֹד עָזַבְנוּ", fr:"De très nombreux endroits, nous sommes partis",
+        mots:[
+          {heb:"וּ",         tl:"u-",       type:"conj", a:"וְ devant מ → וּ"},
+          {heb:"מְקוֹמוֹת",  tl:"mekomot",  type:"nom",  a:"Plur. masc. irrég. de מָקוֹם (lieu) — racine ק-ו-מ"},
+          {heb:"רַבִּים",    tl:"rabim",    type:"adj",  a:"Adj. masc. plur. de רַב"},
+          {heb:"מְאוֹד",     tl:"me'od",    type:"adv",  a:"'Très, beaucoup'"},
+          {heb:"עָזַבְנוּ",  tl:"azavnu",   type:"verbe",a:"Qal passé 1pl. de ע-ז-ב (quitter)"},
+        ]},
+      { heb:"וְרַק מָקוֹם אֶחָד רָצִינוּ וְאָהַבְנוּ", fr:"Et un seul lieu nous avons voulu et aimé",
+        mots:[
+          {heb:"רַק",       tl:"rak",      type:"adv",  a:"'Seulement, uniquement'"},
+          {heb:"מָקוֹם",    tl:"makom",    type:"nom",  a:"Nom masc. sing. : lieu — racine ק-ו-מ"},
+          {heb:"אֶחָד",     tl:"echad",    type:"adj",  a:"Numéral masc. sing. : 'un, unique'"},
+          {heb:"רָצִינוּ",  tl:"ratsinu",  type:"verbe",a:"Qal passé 1pl. de ר-צ-ה (vouloir)"},
+          {heb:"אָהַבְנוּ", tl:"ahavnu",   type:"verbe",a:"Qal passé 1pl. de א-ה-ב (aimer)"},
+        ]},
+      { heb:"וְאֶל הָאָרֶץ, אֶל הָאָרֶץ בָּאנוּ", fr:"Et vers la Terre, vers la Terre, nous sommes venus",
+        mots:[
+          {heb:"אֶל",    tl:"el",    type:"prep", a:"Préposition directionnelle : 'vers, à'"},
+          {heb:"הָ",     tl:"ha-",   type:"art",  a:"Article הַ devant gutturale א → הָ"},
+          {heb:"אָרֶץ",  tl:"arets", type:"nom",  a:"Terre, pays — הָאָרֶץ = Terre d'Israël (symbolique)"},
+          {heb:"בָּאנוּ", tl:"banu",  type:"verbe",a:"Qal passé 1pl. de ב-ו-א (venir) — verbe ל'ו creux"},
+        ]},
+    ]
+  },
+  {
+    id:2, titre:"Refrain", heb:"וְנִמְשֶׁכֶת...", refrain:true,
+    vers:[
+      { heb:"וְנִמְשֶׁכֶת שַׁיָּרָה", fr:"Et la caravane s'étire",
+        mots:[
+          {heb:"נִמְשֶׁכֶת", tl:"nimshekhet", type:"verbe",a:"Nif'al présent fém. de מ-שׁ-כ (tirer) — réfléchi : 's'étirer'"},
+          {heb:"שַׁיָּרָה",  tl:"shayara",    type:"nom",  a:"Caravane — emprunt à l'arabe شَيَّارَة"},
+        ]},
+      { heb:"מִן הַמֵּאָה שֶׁעָבְרָה", fr:"Depuis le siècle passé",
+        mots:[
+          {heb:"מִן",        tl:"min",      type:"prep", a:"Préposition de provenance"},
+          {heb:"הַמֵּאָה",   tl:"hame'a",   type:"nom",  a:"Article + מֵאָה (cent → siècle)"},
+          {heb:"שֶׁעָבְרָה", tl:"she'avra", type:"verbe",a:"שֶׁ + Qal passé 3fs. de ע-ב-ר (passer)"},
+        ]},
+      { heb:"רְחוֹקִים כְּבָר הַיּוֹצְאִים", fr:"Déjà loin, ceux qui sont partis",
+        mots:[
+          {heb:"רְחוֹקִים",   tl:"rechokim", type:"adj",  a:"Adj. masc. plur. de רָחוֹק (loin)"},
+          {heb:"כְּבָר",      tl:"kvar",     type:"adv",  a:"'Déjà, dorénavant'"},
+          {heb:"הַיּוֹצְאִים",tl:"hayots'im",type:"verbe",a:"Qal participe défini de י-צ-א (sortir) — nominalisé : 'ceux qui partent'"},
+        ]},
+      { heb:"אִכָּרִים וַחֲלוּצִים", fr:"Paysans et pionniers",
+        mots:[
+          {heb:"אִכָּרִים", tl:"ikkarim",  type:"nom",  a:"Plur. de אִכָּר (paysan)"},
+          {heb:"וַ",        tl:"va-",      type:"conj", a:"וְ devant gutturale → וַ"},
+          {heb:"חֲלוּצִים", tl:"halutsim", type:"nom",  a:"Plur. de חָלוּץ (pionnier) — terme clé du sionisme travailliste"},
+        ]},
+      { heb:"שֶׁעָמְלוּ עָבְדוּ בַּפֶּרֶךְ", fr:"Qui ont peiné et travaillé avec acharnement",
+        mots:[
+          {heb:"שֶׁ",       tl:"she-",     type:"part", a:"Particule relative"},
+          {heb:"עָמְלוּ",   tl:"amlu",     type:"verbe",a:"Qal passé 3mp. de ע-מ-ל (peiner)"},
+          {heb:"עָבְדוּ",   tl:"avdu",     type:"verbe",a:"Qal passé 3mp. de ע-ב-ד (travailler) — parataxe poétique"},
+          {heb:"בַּפֶּרֶךְ", tl:"baperekh", type:"nom",  a:"בְּ+הַ+פֶּרֶךְ : dureté, travail épuisant — mot biblique (Ex. 1:13)"},
+        ]},
+      { heb:"בְּלִי לִרְאוֹת אֶת סוֹף הַדֶּרֶךְ", fr:"Sans voir le bout du chemin",
+        mots:[
+          {heb:"בְּלִי",     tl:"beli",     type:"prep", a:"'Sans' + infinitif construit"},
+          {heb:"לִרְאוֹת",  tl:"lir'ot",   type:"verbe",a:"Qal infin. construit de ר-א-ה (voir)"},
+          {heb:"אֶת",       tl:"et",       type:"part", a:"Marqueur accusatif (objet défini)"},
+          {heb:"סוֹף",      tl:"sof",      type:"nom",  a:"Fin, bout — état construit : סוֹף הַדֶּרֶךְ"},
+          {heb:"הַדֶּרֶךְ", tl:"haderekh", type:"nom",  a:"Article + דֶּרֶךְ (chemin) — racine ד-ר-כ"},
+        ]},
+      { heb:"וְעַכְשָׁו עוֹבְרִים אֲנַחְנוּ", fr:"Et maintenant c'est nous qui passons",
+        mots:[
+          {heb:"עַכְשָׁו",  tl:"akhshav",  type:"adv",  a:"'Maintenant' — hébreu moderne courant"},
+          {heb:"עוֹבְרִים", tl:"ovrim",    type:"verbe",a:"Qal participe masc. plur. de ע-ב-ר — présent continu"},
+          {heb:"אֲנַחְנוּ", tl:"anakhnu",  type:"pron", a:"Pronom 1pl. 'nous' — emphatique post-verbal"},
+        ]},
+      { heb:"לֹא שָׁקַטְנוּ וְלֹא נַחְנוּ", fr:"Nous ne nous sommes pas tus, pas reposés",
+        mots:[
+          {heb:"לֹא",       tl:"lo",       type:"adv",  a:"Négation verbale absolue"},
+          {heb:"שָׁקַטְנוּ", tl:"shakatnu", type:"verbe",a:"Qal passé 1pl. de שׁ-ק-ט (se taire, se calmer)"},
+          {heb:"נַחְנוּ",   tl:"nakhnu",   type:"verbe",a:"Qal passé 1pl. de נ-ו-ח (se reposer) — verbe creux ע'ו"},
+        ]},
+      { heb:"לֹא יַמְשִׁיכוּ בִּלְעָדֵינוּ", fr:"Ils ne continueront pas sans nous",
+        mots:[
+          {heb:"יַמְשִׁיכוּ",   tl:"yamshikhu",   type:"verbe",a:"Hif'il futur 3mp. de מ-שׁ-כ (continuer)"},
+          {heb:"בִּלְעָדֵינוּ", tl:"bil'adeinu",  type:"prep", a:"בִּלְעָדֵי (sans) + suffix -נוּ (nous) — registre soutenu"},
+        ]},
+      { heb:"זוֹהִי הַרְפַּתְקַת חַיֵּינוּ", fr:"Voilà l'aventure de notre vie",
+        mots:[
+          {heb:"זוֹהִי",       tl:"zohi",      type:"pron", a:"Démonstratif fém. renforcé : זֹאת+הִיא → 'voilà'"},
+          {heb:"הַרְפַּתְקַת",  tl:"harpatkat", type:"nom",  a:"État construit de הַרְפַּתְקָה (aventure) — emprunt grec"},
+          {heb:"חַיֵּינוּ",    tl:"khayeinu",  type:"nom",  a:"חַיִּים (vie, touj. pluriel) + suffix -נוּ : 'notre vie'"},
+        ]},
+    ]
+  },
+  {
+    id:3, titre:"II — Origines", heb:"מִגֵּטָאוֹת...",
+    vers:[
+      { heb:"מִגֵּטָאוֹת וּמַחֲנוֹת הִגַּחְנוּ", fr:"Des ghettos et des camps, nous avons surgi",
+        mots:[
+          {heb:"מִגֵּטָאוֹת", tl:"migetaot",  type:"nom",  a:"מִן + גֵּטָאוֹת (plur. de גֵּטוֹ) — emprunt à l'italien ghetto"},
+          {heb:"מַחֲנוֹת",    tl:"makhanot",  type:"nom",  a:"Plur. de מַחֲנֶה (camp) — racine ח-נ-ה"},
+          {heb:"הִגַּחְנוּ",  tl:"higakhnu",  type:"verbe",a:"Qal passé 1pl. de ג-ח-ח (surgir, jaillir) — très expressif"},
+        ]},
+      { heb:"אֶל הַבִּצּוֹת וְאֶל הַיְשִׁימוֹן הָלַכְנוּ", fr:"Vers les marais et le désert aride, nous sommes allés",
+        mots:[
+          {heb:"הַבִּצּוֹת",  tl:"habittsot",  type:"nom",  a:"Plur. défini de בִּצָּה (marécage)"},
+          {heb:"הַיְשִׁימוֹן", tl:"hayeshimon", type:"nom",  a:"Article + יְשִׁימוֹן (désert aride) — racine י-שׁ-מ — terme biblique poétique"},
+          {heb:"הָלַכְנוּ",   tl:"halakhnu",   type:"verbe",a:"Qal passé 1pl. de ה-ל-כ (aller, marcher)"},
+        ]},
+      { heb:"מִקְצוֹת עֲרָב, מֵרוּסִיָּה וּפּוֹלַנְיָה", fr:"Des confins du monde arabe, de Russie et de Pologne",
+        mots:[
+          {heb:"מִקְצוֹת",    tl:"miktsot",   type:"nom",  a:"מִן + קְצוֹת (plur. de קָצֶה : extrémité, confin)"},
+          {heb:"עֲרָב",       tl:"arav",      type:"nom",  a:"Le monde arabe — sens géographique large"},
+          {heb:"מֵרוּסִיָּה", tl:"merusiya",  type:"nom",  a:"מִן + רוּסִיָּה (Russie)"},
+          {heb:"פּוֹלַנְיָה",  tl:"polanya",   type:"nom",  a:"Pologne — transcription hébraïque"},
+        ]},
+      { heb:"הִדְלַקְנוּ אוֹר גַּם בְּדִימוֹנָה גַּם בִּדְגַנְיָה", fr:"Nous avons allumé une lumière, à Dimona comme à Degania",
+        mots:[
+          {heb:"הִדְלַקְנוּ", tl:"hidlaknu",  type:"verbe",a:"Hif'il passé 1pl. de ד-ל-ק (allumer) — causatif"},
+          {heb:"אוֹר",        tl:"or",        type:"nom",  a:"Lumière — biblique (Gn 1:3) — ici métaphorique : espoir"},
+          {heb:"גַּם...גַּם", tl:"gam...gam", type:"adv",  a:"Corrélation : 'aussi bien…que'"},
+          {heb:"בְּדִימוֹנָה", tl:"bedimona",  type:"nom",  a:"Dimona (Néguev, f. 1955) — absorption immigrants"},
+          {heb:"בִּדְגַנְיָה", tl:"bidganya",  type:"nom",  a:"Degania — 1er kibboutz (1910) — symbole pionnier"},
+        ]},
+    ]
+  },
+  {
+    id:4, titre:"III — Renaissance", heb:"וּמִכָּל...",
+    vers:[
+      { heb:"עַם נוֹצַר וְאֶרֶץ קָמָה", fr:"Un peuple a été créé et une terre s'est levée",
+        mots:[
+          {heb:"עַם",    tl:"am",     type:"nom",  a:"Peuple, nation — עַם יִשְׂרָאֵל"},
+          {heb:"נוֹצַר", tl:"notsar", type:"verbe",a:"Nif'al passé 3ms. de י-צ-ר — passif : 'a été créé'"},
+          {heb:"אֶרֶץ",  tl:"erets",  type:"nom",  a:"Terre, pays — sans article : sens générique/poétique"},
+          {heb:"קָמָה",  tl:"kama",   type:"verbe",a:"Qal passé 3fs. de ק-ו-מ (se lever) — accord avec אֶרֶץ (fém.)"},
+        ]},
+      { heb:"וְשָׂפָה אֲשֶׁר נִרְדָּמָה", fr:"Et une langue qui s'était endormie",
+        mots:[
+          {heb:"שָׂפָה",   tl:"safa",   type:"nom",  a:"Langue / lèvre — renaissance de l'hébreu (Ben-Yehuda)"},
+          {heb:"אֲשֶׁר",  tl:"asher",  type:"part", a:"Pronom relatif formel (biblique) = שֶׁ courant"},
+          {heb:"נִרְדָּמָה",tl:"nirdama",type:"verbe",a:"Nif'al passé 3fs. de ר-ד-מ (s'endormir profondément)"},
+        ]},
+      { heb:"שׁוּב הִתְחִילָה מִתְעוֹרֶרֶת", fr:"A recommencé à s'éveiller",
+        mots:[
+          {heb:"שׁוּב",        tl:"shuv",       type:"adv",  a:"'À nouveau, encore'"},
+          {heb:"הִתְחִילָה",   tl:"hithkhila",  type:"verbe",a:"Hif'il passé 3fs. de ח-ל-ל (commencer)"},
+          {heb:"מִתְעוֹרֶרֶת", tl:"mit'orerot", type:"verbe",a:"Hitpa'el présent 3fs. de ע-ו-ר (s'éveiller) — réfléchi"},
+        ]},
+      { heb:"מִסָּבִיב יֵהוֹם הַסַּעַר", fr:"Autour de nous, la tempête gronde",
+        mots:[
+          {heb:"מִסָּבִיב", tl:"misaviv",  type:"adv",  a:"'De toutes parts, autour'"},
+          {heb:"יֵהוֹם",   tl:"yeom",     type:"verbe",a:"Qal futur 3ms. de ה-מ-ה (gronder) — valeur intemporelle"},
+          {heb:"הַסַּעַר", tl:"hasa'ar",  type:"nom",  a:"Article + סַעַר (tempête) — sens propre et métaphorique"},
+        ]},
+      { heb:"אֲבָל יֵשׁ עַל מָה לִשְׂמֹחַ", fr:"Mais il y a de quoi se réjouir",
+        mots:[
+          {heb:"אֲבָל",    tl:"aval",     type:"conj", a:"Conjonction adversative : 'mais'"},
+          {heb:"יֵשׁ",     tl:"yesh",     type:"part", a:"Existentiel : 'il y a' — opposé à אֵין"},
+          {heb:"עַל מָה",  tl:"al ma",    type:"prep", a:"'De quoi' + infinitif"},
+          {heb:"לִשְׂמֹחַ",tl:"lismoa'kh",type:"verbe",a:"Qal infin. construit de שׂ-מ-ח (se réjouir)"},
+        ]},
+      { heb:"יֵשׁ עוֹד אֹמֶץ, יֵשׁ עוֹד כּוֹחַ", fr:"Il y a encore du courage, encore de la force",
+        mots:[
+          {heb:"עוֹד",   tl:"od",    type:"adv",  a:"'Encore, toujours' — anaphore rhétorique"},
+          {heb:"אֹמֶץ",  tl:"omets", type:"nom",  a:"Courage, bravoure — racine א-מ-צ"},
+          {heb:"כּוֹחַ",  tl:"koah",  type:"nom",  a:"Force, puissance — très courant en hébreu"},
+        ]},
+    ]
+  },
+  {
+    id:5, titre:"IV — Espoir", heb:"אֵיךְ יִשְׂרָאֵל...",
+    vers:[
+      { heb:"אֵיךְ יִשְׂרָאֵל צוֹמַחַת מִסְּבִיבֵנוּ", fr:"Comme Israël grandit autour de nous !",
+        mots:[
+          {heb:"אֵיךְ",         tl:"eikh",      type:"adv",  a:"Exclamatif admiratif : 'comme !'"},
+          {heb:"יִשְׂרָאֵל",    tl:"yisrael",   type:"nom",  a:"Israël — étym. 'il luttera avec Dieu' (Gn 32:29)"},
+          {heb:"צוֹמַחַת",      tl:"tsomakhat", type:"verbe",a:"Qal participe fém. de צ-מ-ח (croître, fleurir)"},
+          {heb:"מִסְּבִיבֵנוּ", tl:"misevivenu",type:"adv",  a:"סָבִיב (autour) + suffix -נוּ"},
+        ]},
+      { heb:"הִיא חֲזָקָה יוֹתֵר מִכָּל חֶסְרוֹנוֹתֵינוּ", fr:"Elle est plus forte que tous nos manques",
+        mots:[
+          {heb:"הִיא",             tl:"hi",       type:"pron", a:"Pronom 3fs. : 'elle'"},
+          {heb:"חֲזָקָה",          tl:"khazaka",  type:"adj",  a:"Adj. fém. sing. : forte — racine ח-ז-ק"},
+          {heb:"יוֹתֵר מִ",        tl:"yoter mi-",type:"adv",  a:"Comparatif : 'plus…que'"},
+          {heb:"חֶסְרוֹנוֹתֵינוּ", tl:"khesronotenu",type:"nom",a:"Plur. de חֶסְרוֹן (manque) + -נוּ : 'nos manques'"},
+        ]},
+      { heb:"וְגַם הַנֶּגֶב עוֹד יִהְיֶה פּוֹרֵחַ", fr:"Et le Néguev aussi fleurira encore",
+        mots:[
+          {heb:"הַנֶּגֶב", tl:"hanegev",  type:"nom",  a:"Le Néguev — désert du sud d'Israël, litt. 'le sec'"},
+          {heb:"יִהְיֶה",  tl:"yihye",    type:"verbe",a:"Qal futur 3ms. de ה-י-ה (être) — auxiliaire"},
+          {heb:"פּוֹרֵחַ",  tl:"pore'akh", type:"verbe",a:"Qal participe de פ-ר-ח (fleurir) — futur progressif"},
+        ]},
+      { heb:"וְעוֹד נִדְאַג שֶׁהַזָּקֵן יִהְיֶה שָׂמֵחַ", fr:"Et nous veillerons à ce que le vieillard soit heureux",
+        mots:[
+          {heb:"נִדְאַג",  tl:"nid'ag",  type:"verbe",a:"Qal futur 1pl. de ד-א-ג (veiller à, prendre soin de)"},
+          {heb:"שֶׁ",      tl:"she-",    type:"part", a:"Subordonnant complétif : 'que'"},
+          {heb:"הַזָּקֵן", tl:"hazaken", type:"nom",  a:"'Le vieillard' — allusion probable à Ben Gourion"},
+          {heb:"שָׂמֵחַ",  tl:"same'akh",type:"adj",  a:"Adj. masc. sing. : heureux — racine שׂ-מ-ח"},
+        ]},
+    ]
+  },
+];
+
+const LEGENDE = [
+  {type:'verbe', label:'Verbe',       desc:'Forme verbale conjuguée, infinitif ou participe. Indicateurs : binyan (Qal, Pi\'el, Hif\'il, Nif\'al, Hitpa\'el), temps, personne, genre, nombre.'},
+  {type:'nom',   label:'Nom',         desc:'Nom commun ou propre. Précisions : genre (masc./fém.), nombre (sing./plur.), état (absolu ou construit), suffix possessif éventuel.'},
+  {type:'adj',   label:'Adjectif',    desc:'Adjectif qualificatif ou prédicatif. Accord en genre et nombre avec le nom qu\'il qualifie ou le sujet.'},
+  {type:'adv',   label:'Adverbe',     desc:'Mot invariable modifiant un verbe, un adjectif ou une phrase entière (intensité, temps, lieu, restriction…).'},
+  {type:'prep',  label:'Préposition', desc:'Particule de relation : lieu, direction, appartenance, moyen, privation. Souvent fusionnée avec le mot suivant (בְּ, לְ, מִן…).'},
+  {type:'conj',  label:'Conjonction', desc:'Mot de liaison entre propositions ou éléments. Principalement וְ (et) avec ses variantes phonétiques.'},
+  {type:'pron',  label:'Pronom',      desc:'Personnel, démonstratif ou réciproque. Peut être suffix (collé au nom ou au verbe) ou indépendant.'},
+  {type:'art',   label:'Article',     desc:'L\'article défini הַ (le/la) et ses variantes phonétiques devant gutturales ou dagesh.'},
+  {type:'part',  label:'Particule',   desc:'Éléments fonctionnels non classés : marqueur accusatif אֶת, relatif שֶׁ/אֲשֶׁר, existentiel יֵשׁ, négatif לֹא, etc.'},
+];
+
+// ═══════════════════════════════════════════════
+// ÉTAT
+// ═══════════════════════════════════════════════
+const TAGS = {
+  nom:'tag-nom', verbe:'tag-verbe', adj:'tag-adj', prep:'tag-prep',
+  conj:'tag-conj', adv:'tag-adv', pron:'tag-pron', art:'tag-art', part:'tag-part'
+};
+const LABELS = {
+  nom:'Nom', verbe:'Verbe', adj:'Adj.', prep:'Prép.', conj:'Conj.',
+  adv:'Adv.', pron:'Pron.', art:'Art.', part:'Part.'
+};
+const CAT_ORDER = ['verbe','nom','adj','adv','prep','conj','pron','art','part'];
+const CAT_NAMES = {
+  verbe:'Verbes', nom:'Noms', adj:'Adjectifs', adv:'Adverbes',
+  prep:'Prépositions', conj:'Conjonctions', pron:'Pronoms', art:'Articles', part:'Particules'
+};
+
+let currentScreen = 'intro';
+let currentStrophe = 1;
+let currentView = 'vers';
+
+// ═══════════════════════════════════════════════
+// RENDUS
+// ═══════════════════════════════════════════════
+function tagHtml(type) {
+  return `<span class="tag ${TAGS[type]||'tag-nom'}">${LABELS[type]||type}</span>`;
+}
+
+function motHtml(m, showSource=false) {
+  return `<div class="mot-row">
+    <div class="mot-top">
+      <span class="mot-heb">${m.heb}</span>
+      <span class="mot-translit">${m.tl}</span>
+      ${tagHtml(m.type)}
+    </div>
+    <div class="mot-analyse">${m.a}</div>
+    ${showSource && m._vers ? `<div class="mot-source">${m._vers}</div>` : ''}
+  </div>`;
+}
+
+function renderVersView(s) {
+  return s.vers.map(v => `
+    <div class="vers-card">
+      <div class="vers-head">
+        <div class="vers-heb">${v.heb}</div>
+        <div class="vers-fr">${v.fr}</div>
+      </div>
+      <div class="mots-list">${v.mots.map(m=>motHtml(m,false)).join('')}</div>
+    </div>
+  `).join('');
+}
+
+function renderCatView(s) {
+  const byType = {};
+  s.vers.forEach(v => {
+    v.mots.forEach(m => {
+      if (!byType[m.type]) byType[m.type] = [];
+      byType[m.type].push({...m, _vers:v.heb});
+    });
+  });
+  return CAT_ORDER.filter(t=>byType[t]&&byType[t].length>0).map(t=>`
+    <div class="cat-section" data-type="${t}">
+      <div class="cat-head" onclick="toggleCat(this.closest('.cat-section'))">
+        ${tagHtml(t)}
+        <span class="cat-name">${CAT_NAMES[t]}</span>
+        <span class="cat-cnt">${byType[t].length} forme${byType[t].length>1?'s':''}</span>
+        <span class="cat-arrow">▼</span>
+      </div>
+      <div class="cat-items">${byType[t].map(m=>motHtml(m,true)).join('')}</div>
+    </div>
+  `).join('');
+}
+
+function toggleCat(section) { section.classList.toggle('closed'); }
+
+function renderLegende() {
+  document.getElementById('legendeContent').innerHTML = LEGENDE.map(l=>`
+    <div class="legend-row">
+      ${tagHtml(l.type)}
+      <div>
+        <strong>${l.label}</strong>
+        <div class="legend-desc">${l.desc}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// Strophe picker
+const picker = document.getElementById('strophePicker');
+STROPHES.forEach(s => {
+  const b = document.createElement('button');
+  b.className = 'sp-btn' + (s.id===1?' active':'');
+  b.textContent = s.titre;
+  b.dataset.id = s.id;
+  b.onclick = () => {
+    currentStrophe = s.id;
+    document.querySelectorAll('.sp-btn').forEach(x=>x.classList.toggle('active',parseInt(x.dataset.id)===currentStrophe));
+    renderAnalyse();
+    document.getElementById('scrollArea').scrollTop = 0;
+  };
+  picker.appendChild(b);
+});
+
+function renderAnalyse() {
+  const s = STROPHES.find(x=>x.id===currentStrophe);
+  document.getElementById('analyseContent').innerHTML =
+    currentView==='vers' ? renderVersView(s) : renderCatView(s);
+}
+
+function setView(v) {
+  currentView = v;
+  document.getElementById('vtVers').classList.toggle('active', v==='vers');
+  document.getElementById('vtCat').classList.toggle('active', v==='cat');
+  renderAnalyse();
+  document.getElementById('scrollArea').scrollTop = 0;
+}
+
+function goScreen(name, btn) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.bn-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('screen'+name.charAt(0).toUpperCase()+name.slice(1)).classList.add('active');
+  btn.classList.add('active');
+  document.getElementById('scrollArea').scrollTop = 0;
+  currentScreen = name;
+  if (name==='analyse') renderAnalyse();
+}
+
+// Init
+renderLegende();
+renderAnalyse();
+</script>
+</body>
+</html>

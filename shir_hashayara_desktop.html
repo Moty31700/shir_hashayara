@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>שיר השיירה — Analyse morphologique</title>
+<link rel="icon" type="image/png" sizes="32x32" href="https://moty31700.github.io/assets/icon-192.png">
+<link rel="icon" type="image/png" sizes="192x192" href="https://moty31700.github.io/assets/icon-192.png">
+<link rel="shortcut icon" href="https://moty31700.github.io/assets/icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Hebrew:wght@300;400;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream:#f5f0e8; --cream-dark:#e8e0cc;
+    --ink:#2c1f0e; --ink-light:#5a3e28;
+    --gold:#9a7b2f; --gold-light:#c4a24a;
+    --rust:#8b3a1a; --sage:#4a6741; --blue-ink:#1a3a5c;
+    --purple:#5a3a7a; --teal:#2a5a6a; --green:#2a6a3a;
+    --border:rgba(154,123,47,0.3);
+    --shadow:0 2px 14px rgba(44,31,14,0.09);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--cream);color:var(--ink);font-family:'Crimson Pro',serif;font-size:17px;line-height:1.75;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");}
+  .wrap{max-width:1000px;margin:0 auto;padding:2.5rem 2rem 5rem;position:relative;z-index:1;}
+
+  /* HEADER */
+  header{text-align:center;padding-bottom:2rem;margin-bottom:2rem;border-bottom:2px solid var(--gold);}
+  .header-eyebrow{font-family:'Crimson Pro',serif;font-style:italic;font-size:.85rem;color:var(--gold);letter-spacing:.18em;text-transform:uppercase;margin-bottom:.5rem;}
+  header h1{font-family:'Noto Serif Hebrew',serif;font-size:2.8rem;font-weight:700;direction:rtl;margin-bottom:.2rem;}
+  header h2{font-family:'IM Fell English',serif;font-size:1.5rem;font-style:italic;color:var(--ink-light);font-weight:400;margin-bottom:.8rem;}
+  .header-meta{font-size:.9rem;color:var(--ink-light);font-style:italic;}
+
+  /* INTRO */
+  .intro-card{background:linear-gradient(135deg,rgba(154,123,47,.08),rgba(154,123,47,.03));border:1px solid var(--border);border-left:4px solid var(--gold);border-radius:4px;padding:1.6rem 1.8rem;margin-bottom:2rem;box-shadow:var(--shadow);}
+  .intro-card h3{font-family:'IM Fell English',serif;font-style:italic;font-size:1.15rem;color:var(--gold);margin-bottom:.8rem;}
+  .intro-card p{margin-bottom:.6rem;}
+  .intro-card p:last-child{margin-bottom:0;}
+  .intro-fact{display:inline-block;background:rgba(154,123,47,.1);border:1px solid var(--border);border-radius:3px;padding:.1rem .55rem;font-size:.82rem;margin:.1rem .2rem;color:var(--ink-light);font-style:italic;}
+
+  /* ONGLETS PRINCIPAUX */
+  .main-tabs{display:flex;gap:.3rem;margin-bottom:2rem;border-bottom:2px solid var(--border);padding-bottom:0;}
+  .main-tab{background:none;border:1px solid transparent;border-bottom:none;border-radius:4px 4px 0 0;font-family:'Crimson Pro',serif;font-size:.95rem;padding:.45rem 1.2rem;cursor:pointer;color:var(--ink-light);transition:all .2s;margin-bottom:-2px;}
+  .main-tab:hover{background:rgba(154,123,47,.08);}
+  .main-tab.active{background:var(--cream);border-color:var(--border);border-bottom-color:var(--cream);color:var(--ink);font-weight:600;}
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;}
+
+  /* LÉGENDE */
+  .legend{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;margin-bottom:1.3rem;}
+  .legend-label{font-size:.8rem;color:var(--ink-light);font-style:italic;margin-right:.4rem;}
+
+  /* TAGS */
+  .tag{display:inline-block;font-size:.68rem;padding:.05rem .45rem;border-radius:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;vertical-align:middle;}
+  .tag-nom  {background:#e8f0e8;color:var(--sage);   border:1px solid var(--sage);}
+  .tag-verbe{background:#e8eef5;color:var(--blue-ink);border:1px solid var(--blue-ink);}
+  .tag-adj  {background:#f5ede8;color:var(--rust);   border:1px solid var(--rust);}
+  .tag-prep {background:#f0ebe0;color:var(--gold);   border:1px solid var(--gold);}
+  .tag-conj {background:#f0f0e0;color:#7a7020;       border:1px solid #c0b040;}
+  .tag-adv  {background:#eee8f0;color:var(--purple); border:1px solid var(--purple);}
+  .tag-pron {background:#f5e8ee;color:#8b2a4a;       border:1px solid #c06080;}
+  .tag-art  {background:#e8f0f5;color:var(--teal);   border:1px solid var(--teal);}
+  .tag-part {background:#f5f0e0;color:#7a6020;       border:1px solid #c0a040;}
+
+  /* NAV STROPHES */
+  .strophes-nav{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.2rem;align-items:center;}
+  .sn-btn{background:none;border:1px solid var(--border);padding:.28rem .9rem;font-family:'Crimson Pro',serif;font-size:.82rem;cursor:pointer;color:var(--ink-light);border-radius:2px;transition:all .2s;}
+  .sn-btn.active{background:var(--gold);color:var(--cream);border-color:var(--gold);}
+  .sn-sep{width:1px;height:1.4em;background:var(--border);margin:0 .3rem;display:inline-block;}
+  .btn-all{background:none;border:1px solid var(--sage);padding:.22rem .75rem;font-family:'Crimson Pro',serif;font-size:.78rem;cursor:pointer;color:var(--sage);border-radius:2px;transition:all .2s;}
+  .btn-all:hover{background:var(--sage);color:#fff;}
+  .btn-none{background:none;border:1px solid var(--rust);padding:.22rem .75rem;font-family:'Crimson Pro',serif;font-size:.78rem;cursor:pointer;color:var(--rust);border-radius:2px;transition:all .2s;}
+  .btn-none:hover{background:var(--rust);color:#fff;}
+
+  /* VUE TOGGLE */
+  .sub-controls{display:flex;gap:.5rem;margin-bottom:1.2rem;}
+  .view-btn{background:none;border:1px solid var(--border);padding:.28rem .9rem;font-family:'Crimson Pro',serif;font-size:.85rem;cursor:pointer;border-radius:2px;color:var(--ink-light);transition:all .2s;}
+  .view-btn.active{background:var(--ink);color:var(--cream);border-color:var(--ink);}
+
+  /* VERS */
+  .vers-block{border:1px solid var(--border);border-radius:3px;margin-bottom:1.2rem;overflow:hidden;box-shadow:var(--shadow);}
+  .vers-text{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;padding:1rem 1.3rem;background:var(--cream);}
+  .vers-heb{direction:rtl;font-family:'Noto Serif Hebrew',serif;font-size:1.15rem;border-right:3px solid var(--gold-light);padding-right:.8rem;}
+  .vers-fr{font-style:italic;color:var(--ink-light);font-size:.97rem;}
+  .mots-row{background:rgba(154,123,47,.04);border-top:1px solid rgba(154,123,47,.15);padding:.9rem 1.3rem;display:flex;flex-wrap:wrap;gap:.5rem;}
+
+  /* CAT ACCORDÉON */
+  .cat-section{margin-bottom:2rem;}
+  .cat-header{display:flex;align-items:center;gap:.7rem;padding:.3rem .4rem;margin-bottom:.75rem;border-bottom:1px solid var(--border);cursor:pointer;user-select:none;border-radius:3px;transition:background .15s;}
+  .cat-header:hover{background:rgba(154,123,47,.07);}
+  .cat-header .cat-label{font-family:'IM Fell English',serif;font-style:italic;font-size:1.1rem;color:var(--ink);}
+  .cat-header .cat-count{font-size:.8rem;color:var(--ink-light);font-style:italic;}
+  .cat-header .cat-arrow{margin-left:auto;font-size:.75rem;color:var(--gold);transition:transform .25s;}
+  .cat-section.closed .cat-arrow{transform:rotate(-90deg);}
+  .cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:.55rem;overflow:hidden;transition:max-height .3s ease,opacity .25s ease;max-height:2000px;opacity:1;}
+  .cat-section.closed .cat-grid{max-height:0!important;opacity:0;}
+
+  /* MOT CARD */
+  .mot-card{background:var(--cream);border:1px solid var(--border);border-radius:3px;padding:.55rem .8rem;font-size:.86rem;line-height:1.5;transition:box-shadow .15s;}
+  .mot-card:hover{box-shadow:0 2px 8px rgba(44,31,14,.12);}
+  .mot-top{display:flex;align-items:baseline;gap:.4rem;flex-wrap:wrap;margin-bottom:.25rem;}
+  .mot-heb{font-family:'Noto Serif Hebrew',serif;font-size:1.1rem;font-weight:700;direction:rtl;}
+  .mot-translit{font-style:italic;color:var(--gold);font-size:.8rem;}
+  .mot-analyse{color:var(--ink-light);font-size:.83rem;}
+  .mot-vers{font-size:.75rem;color:var(--gold);font-style:italic;margin-top:.15rem;opacity:.8;direction:rtl;font-family:'Noto Serif Hebrew',serif;}
+
+  /* REFRAIN */
+  .refrain-bar{text-align:center;font-style:italic;color:var(--gold);font-size:.8rem;letter-spacing:.1em;padding:.35rem;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:rgba(154,123,47,.05);margin-bottom:.8rem;}
+
+  /* ══ AUDIO ══ */
+  .audio-wrap{background:linear-gradient(135deg,rgba(154,123,47,.07),rgba(154,123,47,.02));border:1px solid var(--border);border-radius:4px;padding:1.4rem 1.6rem;}
+  .audio-wrap h3{font-family:'IM Fell English',serif;font-style:italic;color:var(--gold);font-size:1.05rem;margin-bottom:.8rem;}
+  .audio-global-btns{display:flex;gap:.6rem;margin-bottom:1.2rem;flex-wrap:wrap;}
+  .btn-play-all{background:var(--gold);color:#fff;border:none;border-radius:3px;padding:.38rem 1.1rem;cursor:pointer;font-family:'Crimson Pro',serif;font-size:.9rem;display:flex;align-items:center;gap:.4rem;transition:background .2s;}
+  .btn-play-all:hover,.btn-play-all.playing{background:var(--rust);}
+  .btn-stop{background:none;border:1px solid var(--rust);color:var(--rust);border-radius:3px;padding:.38rem 1rem;cursor:pointer;font-family:'Crimson Pro',serif;font-size:.9rem;transition:all .2s;}
+  .btn-stop:hover{background:var(--rust);color:#fff;}
+
+  .audio-strophe-block{margin-bottom:1.2rem;border:1px solid var(--border);border-radius:3px;overflow:hidden;}
+  .audio-strophe-head{background:var(--cream-dark);padding:.55rem 1rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+  .audio-strophe-heb{font-family:'Noto Serif Hebrew',serif;direction:rtl;font-size:1rem;font-weight:700;}
+  .audio-strophe-titre{font-style:italic;font-size:.82rem;color:var(--ink-light);}
+  .btn-speak-strophe{background:none;border:1px solid var(--border);border-radius:3px;padding:.22rem .7rem;cursor:pointer;font-size:.78rem;color:var(--ink-light);transition:all .2s;white-space:nowrap;}
+  .btn-speak-strophe:hover,.btn-speak-strophe.playing{background:var(--gold);color:#fff;border-color:var(--gold);}
+
+  .audio-vers-row{display:flex;align-items:center;gap:.8rem;padding:.5rem 1rem;border-bottom:1px solid rgba(154,123,47,.1);background:var(--cream);}
+  .audio-vers-row:last-child{border-bottom:none;}
+  .audio-heb{flex:1;font-family:'Noto Serif Hebrew',serif;direction:rtl;font-size:1.05rem;}
+  .audio-fr{flex:1;font-style:italic;color:var(--ink-light);font-size:.88rem;}
+  .btn-speak-vers{background:none;border:1px solid var(--border);border-radius:3px;padding:.22rem .6rem;cursor:pointer;font-size:.78rem;color:var(--ink-light);transition:all .2s;flex-shrink:0;}
+  .btn-speak-vers:hover,.btn-speak-vers.playing{background:var(--gold);color:#fff;border-color:var(--gold);}
+  .tts-note{font-size:.78rem;font-style:italic;color:var(--ink-light);margin-top:.9rem;padding-top:.6rem;border-top:1px solid var(--border);}
+
+  /* ══ RECONSTITUER ══ */
+  .recon-intro-text{font-size:.9rem;color:var(--ink-light);font-style:italic;margin-bottom:1.2rem;}
+  .recon-nav{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1rem;align-items:center;}
+  .rs-btn{background:none;border:1px solid var(--border);padding:.28rem .9rem;font-family:'Crimson Pro',serif;font-size:.82rem;cursor:pointer;color:var(--ink-light);border-radius:2px;transition:all .2s;}
+  .rs-btn.active{background:var(--gold);color:var(--cream);border-color:var(--gold);}
+  .score-bar{display:flex;align-items:center;gap:.6rem;font-size:.9rem;color:var(--ink-light);margin-bottom:1.2rem;}
+  .score-val{font-size:1.2rem;font-weight:700;color:var(--gold);}
+
+  .recon-ex{background:var(--cream);border:1px solid var(--border);border-radius:4px;margin-bottom:1.3rem;overflow:hidden;box-shadow:var(--shadow);}
+  .recon-ex-head{background:var(--cream-dark);padding:.6rem 1rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+  .recon-fr{font-style:italic;color:var(--ink-light);font-size:.9rem;}
+  .recon-num{font-size:.75rem;color:var(--gold);}
+
+  .drop-zone{padding:.9rem 1rem .7rem;min-height:3.6rem;border-bottom:2px dashed rgba(154,123,47,.35);display:flex;flex-wrap:wrap;gap:.35rem;align-items:center;direction:rtl;transition:background .2s;}
+  .drop-zone.correct-z{border-bottom-color:var(--green);background:rgba(42,106,58,.05);}
+  .drop-zone.wrong-z{border-bottom-color:var(--rust);background:rgba(139,58,26,.05);}
+  .drop-zone .tile{cursor:pointer;}
+
+  .tiles-pool{padding:.6rem 1rem;display:flex;flex-wrap:wrap;gap:.35rem;direction:rtl;border-bottom:1px solid rgba(154,123,47,.1);}
+
+  .tile{font-family:'Noto Serif Hebrew',serif;font-size:1.05rem;padding:.28rem .6rem;background:var(--cream-dark);border:1px solid var(--border);border-radius:4px;cursor:pointer;user-select:none;transition:all .18s;display:inline-block;}
+  .tile:hover{background:var(--gold-light);color:#fff;border-color:var(--gold);}
+  .tile.used{opacity:.3;cursor:not-allowed;pointer-events:none;}
+  .tile.in-zone{background:rgba(154,123,47,.18);color:var(--ink);border-color:var(--gold-light);}
+
+  .recon-fb{padding:.35rem 1rem .5rem;font-size:.88rem;min-height:1.8rem;}
+  .recon-fb.ok{color:var(--green);}
+  .recon-fb.ko{color:var(--rust);}
+  .recon-btns{display:flex;gap:.5rem;padding:.5rem 1rem .9rem;flex-wrap:wrap;}
+  .btn-check{background:var(--blue-ink);color:#fff;border:none;border-radius:3px;padding:.32rem 1rem;font-family:'Crimson Pro',serif;font-size:.85rem;cursor:pointer;transition:background .2s;}
+  .btn-check:hover{background:var(--gold);}
+  .btn-reset-ex{background:none;border:1px solid var(--border);border-radius:3px;padding:.32rem .9rem;font-family:'Crimson Pro',serif;font-size:.82rem;cursor:pointer;color:var(--ink-light);transition:all .2s;}
+  .btn-reset-ex:hover{background:var(--rust);color:#fff;border-color:var(--rust);}
+  .btn-reveal{background:none;border:1px solid var(--sage);border-radius:3px;padding:.32rem .9rem;font-family:'Crimson Pro',serif;font-size:.82rem;cursor:pointer;color:var(--sage);transition:all .2s;}
+  .btn-reveal:hover{background:var(--sage);color:#fff;}
+
+  footer{text-align:center;margin-top:3rem;font-size:.8rem;color:var(--gold);font-style:italic;border-top:1px solid var(--border);padding-top:1.2rem;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="header-eyebrow">Analyse morphologique complète</div>
+  <h1>שיר השיירה</h1>
+  <h2>Le Chant de la Caravane</h2>
+  <div class="header-meta">Paroles : עָלִי מוֹהָר &nbsp;·&nbsp; Mélodie : grecque populaire &nbsp;·&nbsp; Interprète : אָרִיק אַיינְשְׁטַיין</div>
+</header>
+
+<div class="intro-card">
+  <h3>La chanson et sa réception</h3>
+  <p><strong>שיר השיירה</strong> est l'une des chansons les plus aimées d'<strong>אָרִיק אַיינְשְׁטַיין</strong> (Arik Einstein, 1939–2013). Paroles de <strong>עָלִי מוֹהָר</strong>, mélodie grecque populaire, arrangements de <strong>מִיקִי גַּבְּרִיאֵלוֹב</strong>. Album <em>עַל גְּבוּל הָאוֹר</em> (1987).</p>
+  <p>Thèmes : immigration (עַלִיָּה), rassemblement des diasporas (קִיבּוּץ גָּלֻיּוֹת), renaissance de la langue hébraïque, continuité entre pionniers et Israéliens d'aujourd'hui.</p>
+  <p>
+    <span class="intro-fact">Album : עַל גְּבוּל הָאוֹר (1987)</span>
+    <span class="intro-fact">יהודה פוליקר · מירל רזניק</span>
+    <span class="intro-fact">Clip KKL : archives עלייה</span>
+    <span class="intro-fact">Mélodie : populaire grecque</span>
+  </p>
+</div>
+
+<!-- ONGLETS -->
+<div class="main-tabs">
+  <button class="main-tab active" onclick="setTab('analyse',this)">🔍 Analyse</button>
+  <button class="main-tab" onclick="setTab('audio',this)">🔊 Audio</button>
+  <button class="main-tab" onclick="setTab('recon',this)">🧩 Reconstituer</button>
+</div>
+
+<!-- ══ ANALYSE ══ -->
+<div class="tab-panel active" id="tab-analyse">
+  <div class="legend">
+    <span class="legend-label">Catégories :</span>
+    <span class="tag tag-nom">Nom</span><span class="tag tag-verbe">Verbe</span>
+    <span class="tag tag-adj">Adjectif</span><span class="tag tag-prep">Prép.</span>
+    <span class="tag tag-conj">Conj.</span><span class="tag tag-adv">Adverbe</span>
+    <span class="tag tag-pron">Pronom</span><span class="tag tag-art">Article</span>
+    <span class="tag tag-part">Particule</span>
+  </div>
+  <div class="sub-controls">
+    <button class="view-btn active" id="btnVers" onclick="setView('vers')">📜 Par vers</button>
+    <button class="view-btn" id="btnCat" onclick="setView('cat')">🗂 Par catégorie</button>
+  </div>
+  <div class="strophes-nav" id="strophesNav"></div>
+  <div id="contentArea"></div>
+</div>
+
+<!-- ══ AUDIO ══ -->
+<div class="tab-panel" id="tab-audio">
+  <div class="audio-wrap">
+    <h3>🔊 Écoute et prononciation — he-IL</h3>
+    <p style="font-size:.88rem;color:var(--ink-light);margin-bottom:1rem;">Synthèse vocale hébreu israélien (Web Speech API). Clique ▶ pour un vers, ou ▶ Strophe pour tout entendre d'un bloc.</p>
+    <div class="audio-global-btns">
+      <button class="btn-play-all" id="btnPlayAll" onclick="speakAll()">▶ Lire toute la chanson</button>
+      <button class="btn-stop" onclick="stopAll()">⏹ Arrêter</button>
+    </div>
+    <div id="audioContent"></div>
+    <p class="tts-note">⚠ Nécessite une voix he-IL installée sur votre système. Fonctionne sur Safari, Chrome et Edge. Si aucun son, vérifiez les voix disponibles dans les préférences système.</p>
+  </div>
+</div>
+
+<!-- ══ RECONSTITUER ══ -->
+<div class="tab-panel" id="tab-recon">
+  <p class="recon-intro-text">Remets les mots dans le bon ordre pour reconstituer chaque vers. Clique sur une tuile pour la placer dans la zone, reclique dessus pour la retirer.</p>
+  <div class="recon-nav" id="reconPicker"></div>
+  <div class="score-bar">Score de la strophe : <span class="score-val" id="reconScore">0</span> / <span id="reconTotal">0</span></div>
+  <div id="reconContent"></div>
+</div>
+
+<footer>שיר השיירה · Analyse morphologique · usage pédagogique</footer>
+</div>
+
+<script>
+// ══════════════════════════════════
+// DONNÉES
+// ══════════════════════════════════
+const STROPHES = [
+  { id:1, titre:"I — L'arrivée", heb:"בִּלְשׁוֹנוֹת רַבּוֹת...", vers:[
+    {heb:"בִּלְשׁוֹנוֹת רַבּוֹת מִסְּפֹר דִּבַּרְנוּ",fr:"En de nombreuses langues, plus qu'on ne peut compter, nous avons parlé",mots:[
+      {heb:"בִּ",tl:"bi-",type:"prep",a:"Préposition בְּ + assimilation dagesh devant שׁ"},
+      {heb:"לְשׁוֹנוֹת",tl:"leshonot",type:"nom",a:"Plur. fém. de לָשׁוֹן (langue) — racine ל-שׁ-נ"},
+      {heb:"רַבּוֹת",tl:"rabot",type:"adj",a:"Adj. fém. plur. de רַב (nombreux)"},
+      {heb:"מִסְּפֹר",tl:"mispor",type:"prep",a:"מִן + infin. absolu de ס-פ-ר : 'plus qu'on ne peut compter'"},
+      {heb:"דִּבַּרְנוּ",tl:"dibarnu",type:"verbe",a:"Pi'el passé 1pl. de ד-ב-ר (parler)"},
+    ]},
+    {heb:"וְזֶה אֶת זֶה כִּמְעַט בִּכְלַל שֶׁלֹּא הִכַּרְנוּ",fr:"Et les uns les autres, nous ne nous connaissions presque pas du tout",mots:[
+      {heb:"וְ",tl:"ve-",type:"conj",a:"Conjonction de coordination (et)"},
+      {heb:"זֶה אֶת זֶה",tl:"ze et ze",type:"pron",a:"Locution réciproque : 'l'un l'autre'"},
+      {heb:"כִּמְעַט",tl:"kim'at",type:"adv",a:"'Presque, à peine'"},
+      {heb:"בִּכְלַל",tl:"bikhlal",type:"adv",a:"'Du tout' (avec שֶׁלֹּא)"},
+      {heb:"שֶׁלֹּא",tl:"shelo",type:"part",a:"Particule négative relative : שֶׁ + לֹא"},
+      {heb:"הִכַּרְנוּ",tl:"hikkarnu",type:"verbe",a:"Hif'il passé 1pl. de נ-כ-ר (reconnaître)"},
+    ]},
+    {heb:"וּמְקוֹמוֹת רַבִּים מְאוֹד עָזַבְנוּ",fr:"De très nombreux endroits, nous sommes partis",mots:[
+      {heb:"וּ",tl:"u-",type:"conj",a:"וְ devant מ → וּ"},
+      {heb:"מְקוֹמוֹת",tl:"mekomot",type:"nom",a:"Plur. de מָקוֹם (lieu) — racine ק-ו-מ"},
+      {heb:"רַבִּים",tl:"rabim",type:"adj",a:"Adj. masc. plur. de רַב"},
+      {heb:"מְאוֹד",tl:"me'od",type:"adv",a:"'Très, beaucoup'"},
+      {heb:"עָזַבְנוּ",tl:"azavnu",type:"verbe",a:"Qal passé 1pl. de ע-ז-ב (quitter)"},
+    ]},
+    {heb:"וְרַק מָקוֹם אֶחָד רָצִינוּ וְאָהַבְנוּ",fr:"Et un seul lieu nous avons voulu et aimé",mots:[
+      {heb:"רַק",tl:"rak",type:"adv",a:"'Seulement'"},
+      {heb:"מָקוֹם",tl:"makom",type:"nom",a:"Lieu — racine ק-ו-מ"},
+      {heb:"אֶחָד",tl:"echad",type:"adj",a:"Numéral masc. : 'un, unique'"},
+      {heb:"רָצִינוּ",tl:"ratsinu",type:"verbe",a:"Qal passé 1pl. de ר-צ-ה (vouloir)"},
+      {heb:"אָהַבְנוּ",tl:"ahavnu",type:"verbe",a:"Qal passé 1pl. de א-ה-ב (aimer)"},
+    ]},
+    {heb:"וְאֶל הָאָרֶץ, אֶל הָאָרֶץ בָּאנוּ",fr:"Et vers la Terre, vers la Terre, nous sommes venus",mots:[
+      {heb:"אֶל",tl:"el",type:"prep",a:"Préposition directionnelle : 'vers, à'"},
+      {heb:"הָ",tl:"ha-",type:"art",a:"Article הַ devant gutturale א → הָ"},
+      {heb:"אָרֶץ",tl:"arets",type:"nom",a:"Terre — הָאָרֶץ = Terre d'Israël (symbolique)"},
+      {heb:"בָּאנוּ",tl:"banu",type:"verbe",a:"Qal passé 1pl. de ב-ו-א (venir) — verbe ל'ו creux"},
+    ]},
+  ]},
+  { id:2, titre:"Refrain", heb:"וְנִמְשֶׁכֶת שַׁיָּרָה...", refrain:true, vers:[
+    {heb:"וְנִמְשֶׁכֶת שַׁיָּרָה",fr:"Et la caravane s'étire",mots:[
+      {heb:"נִמְשֶׁכֶת",tl:"nimshekhet",type:"verbe",a:"Nif'al présent fém. de מ-שׁ-כ — réfléchi : 's'étirer'"},
+      {heb:"שַׁיָּרָה",tl:"shayara",type:"nom",a:"Caravane — emprunt à l'arabe شَيَّارَة"},
+    ]},
+    {heb:"מִן הַמֵּאָה שֶׁעָבְרָה",fr:"Depuis le siècle passé",mots:[
+      {heb:"מִן",tl:"min",type:"prep",a:"'De, depuis'"},
+      {heb:"הַמֵּאָה",tl:"hame'a",type:"nom",a:"Article + מֵאָה (siècle)"},
+      {heb:"שֶׁעָבְרָה",tl:"she'avra",type:"verbe",a:"שֶׁ + Qal passé 3fs. de ע-ב-ר (passer)"},
+    ]},
+    {heb:"רְחוֹקִים כְּבָר הַיּוֹצְאִים",fr:"Déjà loin, ceux qui sont partis",mots:[
+      {heb:"רְחוֹקִים",tl:"rechokim",type:"adj",a:"Adj. masc. plur. de רָחוֹק (loin)"},
+      {heb:"כְּבָר",tl:"kvar",type:"adv",a:"'Déjà'"},
+      {heb:"הַיּוֹצְאִים",tl:"hayots'im",type:"verbe",a:"Qal participe défini de י-צ-א — 'ceux qui partent'"},
+    ]},
+    {heb:"אִכָּרִים וַחֲלוּצִים",fr:"Paysans et pionniers",mots:[
+      {heb:"אִכָּרִים",tl:"ikkarim",type:"nom",a:"Plur. de אִכָּר (paysan)"},
+      {heb:"וַ",tl:"va-",type:"conj",a:"וְ devant gutturale → וַ"},
+      {heb:"חֲלוּצִים",tl:"halutsim",type:"nom",a:"Plur. de חָלוּץ (pionnier) — terme clé du sionisme travailliste"},
+    ]},
+    {heb:"שֶׁעָמְלוּ עָבְדוּ בַּפֶּרֶךְ",fr:"Qui ont peiné, travaillé avec acharnement",mots:[
+      {heb:"שֶׁ",tl:"she-",type:"part",a:"Particule relative"},
+      {heb:"עָמְלוּ",tl:"amlu",type:"verbe",a:"Qal passé 3mp. de ע-מ-ל (peiner)"},
+      {heb:"עָבְדוּ",tl:"avdu",type:"verbe",a:"Qal passé 3mp. de ע-ב-ד — parataxe poétique"},
+      {heb:"בַּפֶּרֶךְ",tl:"baperekh",type:"nom",a:"בְּ+הַ+פֶּרֶךְ : travail épuisant — biblique (Ex. 1:13)"},
+    ]},
+    {heb:"בְּלִי לִרְאוֹת אֶת סוֹף הַדֶּרֶךְ",fr:"Sans voir le bout du chemin",mots:[
+      {heb:"בְּלִי",tl:"beli",type:"prep",a:"'Sans' + infinitif"},
+      {heb:"לִרְאוֹת",tl:"lir'ot",type:"verbe",a:"Qal infin. de ר-א-ה (voir)"},
+      {heb:"אֶת",tl:"et",type:"part",a:"Marqueur accusatif"},
+      {heb:"סוֹף",tl:"sof",type:"nom",a:"Fin, bout"},
+      {heb:"הַדֶּרֶךְ",tl:"haderekh",type:"nom",a:"Article + דֶּרֶךְ (chemin) — racine ד-ר-כ"},
+    ]},
+    {heb:"וְעַכְשָׁו עוֹבְרִים אֲנַחְנוּ",fr:"Et maintenant c'est nous qui passons",mots:[
+      {heb:"עַכְשָׁו",tl:"akhshav",type:"adv",a:"'Maintenant'"},
+      {heb:"עוֹבְרִים",tl:"ovrim",type:"verbe",a:"Qal participe masc. plur. de ע-ב-ר — présent"},
+      {heb:"אֲנַחְנוּ",tl:"anakhnu",type:"pron",a:"Pronom 1pl. 'nous' — emphatique"},
+    ]},
+    {heb:"לֹא שָׁקַטְנוּ וְלֹא נַחְנוּ",fr:"Nous ne nous sommes pas tus, pas reposés",mots:[
+      {heb:"לֹא",tl:"lo",type:"adv",a:"Négation absolue"},
+      {heb:"שָׁקַטְנוּ",tl:"shakatnu",type:"verbe",a:"Qal passé 1pl. de שׁ-ק-ט (se taire)"},
+      {heb:"נַחְנוּ",tl:"nakhnu",type:"verbe",a:"Qal passé 1pl. de נ-ו-ח (se reposer) — verbe creux ע'ו"},
+    ]},
+    {heb:"לֹא יַמְשִׁיכוּ בִּלְעָדֵינוּ",fr:"Ils ne continueront pas sans nous",mots:[
+      {heb:"יַמְשִׁיכוּ",tl:"yamshikhu",type:"verbe",a:"Hif'il futur 3mp. de מ-שׁ-כ (continuer)"},
+      {heb:"בִּלְעָדֵינוּ",tl:"bil'adeinu",type:"prep",a:"בִּלְעָדֵי (sans) + -נוּ — registre soutenu"},
+    ]},
+    {heb:"זוֹהִי הַרְפַּתְקַת חַיֵּינוּ",fr:"Voilà l'aventure de notre vie",mots:[
+      {heb:"זוֹהִי",tl:"zohi",type:"pron",a:"Démonstratif fém. renforcé : זֹאת+הִיא → 'voilà'"},
+      {heb:"הַרְפַּתְקַת",tl:"harpatkat",type:"nom",a:"État construit de הַרְפַּתְקָה (aventure) — emprunt grec"},
+      {heb:"חַיֵּינוּ",tl:"khayeinu",type:"nom",a:"חַיִּים (vie) + -נוּ : 'notre vie'"},
+    ]},
+  ]},
+  { id:3, titre:"II — Les origines", heb:"מִגֵּטָאוֹת...", vers:[
+    {heb:"מִגֵּטָאוֹת וּמַחֲנוֹת הִגַּחְנוּ",fr:"Des ghettos et des camps, nous avons surgi",mots:[
+      {heb:"מִגֵּטָאוֹת",tl:"migetaot",type:"nom",a:"מִן + גֵּטָאוֹת — emprunt à l'italien ghetto"},
+      {heb:"מַחֲנוֹת",tl:"makhanot",type:"nom",a:"Plur. de מַחֲנֶה (camp)"},
+      {heb:"הִגַּחְנוּ",tl:"higakhnu",type:"verbe",a:"Qal passé 1pl. de ג-ח-ח (surgir)"},
+    ]},
+    {heb:"אֶל הַבִּצּוֹת וְאֶל הַיְשִׁימוֹן הָלַכְנוּ",fr:"Vers les marais et le désert aride, nous sommes allés",mots:[
+      {heb:"הַבִּצּוֹת",tl:"habittsot",type:"nom",a:"Plur. défini de בִּצָּה (marécage)"},
+      {heb:"הַיְשִׁימוֹן",tl:"hayeshimon",type:"nom",a:"Désert aride — racine י-שׁ-מ"},
+      {heb:"הָלַכְנוּ",tl:"halakhnu",type:"verbe",a:"Qal passé 1pl. de ה-ל-כ (aller)"},
+    ]},
+    {heb:"מִקְצוֹת עֲרָב, מֵרוּסִיָּה וּפּוֹלַנְיָה",fr:"Des confins du monde arabe, de Russie et de Pologne",mots:[
+      {heb:"מִקְצוֹת",tl:"miktsot",type:"nom",a:"מִן + קְצוֹת (confins)"},
+      {heb:"עֲרָב",tl:"arav",type:"nom",a:"Le monde arabe"},
+      {heb:"מֵרוּסִיָּה",tl:"merusiya",type:"nom",a:"מִן + רוּסִיָּה (Russie)"},
+      {heb:"פּוֹלַנְיָה",tl:"polanya",type:"nom",a:"Pologne — translittération hébraïque"},
+    ]},
+    {heb:"הִדְלַקְנוּ אוֹר גַּם בְּדִימוֹנָה גַּם בִּדְגַנְיָה",fr:"Nous avons allumé une lumière, à Dimona comme à Degania",mots:[
+      {heb:"הִדְלַקְנוּ",tl:"hidlaknu",type:"verbe",a:"Hif'il passé 1pl. de ד-ל-ק (allumer)"},
+      {heb:"אוֹר",tl:"or",type:"nom",a:"Lumière — biblique (Gn 1:3) — métaphore : espoir"},
+      {heb:"גַּם...גַּם",tl:"gam...gam",type:"adv",a:"'Aussi bien…que'"},
+      {heb:"בְּדִימוֹנָה",tl:"bedimona",type:"nom",a:"Dimona (Néguev, f. 1955)"},
+      {heb:"בִּדְגַנְיָה",tl:"bidganya",type:"nom",a:"Degania — 1er kibboutz (1910)"},
+    ]},
+  ]},
+  { id:4, titre:"III — La renaissance", heb:"וּמִכָּל הַגַּלוּיוֹת...", vers:[
+    {heb:"עַם נוֹצַר וְאֶרֶץ קָמָה",fr:"Un peuple a été créé et une terre s'est levée",mots:[
+      {heb:"עַם",tl:"am",type:"nom",a:"Peuple, nation"},
+      {heb:"נוֹצַר",tl:"notsar",type:"verbe",a:"Nif'al passé 3ms. de י-צ-ר — passif : 'a été créé'"},
+      {heb:"אֶרֶץ",tl:"erets",type:"nom",a:"Terre, pays"},
+      {heb:"קָמָה",tl:"kama",type:"verbe",a:"Qal passé 3fs. de ק-ו-מ (se lever) — accord fém."},
+    ]},
+    {heb:"וְשָׂפָה אֲשֶׁר נִרְדָּמָה",fr:"Et une langue qui s'était endormie",mots:[
+      {heb:"שָׂפָה",tl:"safa",type:"nom",a:"Langue — réfère à la renaissance de l'hébreu (Ben-Yehuda)"},
+      {heb:"אֲשֶׁר",tl:"asher",type:"part",a:"Pronom relatif formel (biblique)"},
+      {heb:"נִרְדָּמָה",tl:"nirdama",type:"verbe",a:"Nif'al passé 3fs. de ר-ד-מ (s'endormir)"},
+    ]},
+    {heb:"שׁוּב הִתְחִילָה מִתְעוֹרֶרֶת",fr:"A recommencé à s'éveiller",mots:[
+      {heb:"שׁוּב",tl:"shuv",type:"adv",a:"'À nouveau, encore'"},
+      {heb:"הִתְחִילָה",tl:"hithkhila",type:"verbe",a:"Hif'il passé 3fs. de ח-ל-ל (commencer)"},
+      {heb:"מִתְעוֹרֶרֶת",tl:"mit'orerot",type:"verbe",a:"Hitpa'el présent 3fs. de ע-ו-ר (s'éveiller) — réfléchi"},
+    ]},
+    {heb:"מִסָּבִיב יֵהוֹם הַסַּעַר",fr:"Autour de nous, la tempête gronde",mots:[
+      {heb:"מִסָּבִיב",tl:"misaviv",type:"adv",a:"'De toutes parts'"},
+      {heb:"יֵהוֹם",tl:"yeom",type:"verbe",a:"Qal futur 3ms. de ה-מ-ה (gronder)"},
+      {heb:"הַסַּעַר",tl:"hasa'ar",type:"nom",a:"Article + סַעַר (tempête)"},
+    ]},
+    {heb:"אֲבָל יֵשׁ עַל מָה לִשְׂמֹחַ",fr:"Mais il y a de quoi se réjouir",mots:[
+      {heb:"אֲבָל",tl:"aval",type:"conj",a:"'Mais' — adversatif"},
+      {heb:"יֵשׁ",tl:"yesh",type:"part",a:"Existentiel : 'il y a'"},
+      {heb:"עַל מָה",tl:"al ma",type:"prep",a:"'De quoi' + infinitif"},
+      {heb:"לִשְׂמֹחַ",tl:"lismoa'kh",type:"verbe",a:"Qal infin. de שׂ-מ-ח (se réjouir)"},
+    ]},
+    {heb:"יֵשׁ עוֹד אֹמֶץ, יֵשׁ עוֹד כּוֹחַ",fr:"Il y a encore du courage, encore de la force",mots:[
+      {heb:"עוֹד",tl:"od",type:"adv",a:"'Encore, toujours' — anaphore"},
+      {heb:"אֹמֶץ",tl:"omets",type:"nom",a:"Courage — racine א-מ-צ"},
+      {heb:"כּוֹחַ",tl:"koah",type:"nom",a:"Force, puissance"},
+    ]},
+  ]},
+  { id:5, titre:"IV — L'espoir", heb:"אֵיךְ יִשְׂרָאֵל...", vers:[
+    {heb:"אֵיךְ יִשְׂרָאֵל צוֹמַחַת מִסְּבִיבֵנוּ",fr:"Comme Israël grandit autour de nous !",mots:[
+      {heb:"אֵיךְ",tl:"eikh",type:"adv",a:"Exclamatif admiratif : 'comme !'"},
+      {heb:"יִשְׂרָאֵל",tl:"yisrael",type:"nom",a:"Israël — étym. 'il luttera avec Dieu' (Gn 32:29)"},
+      {heb:"צוֹמַחַת",tl:"tsomakhat",type:"verbe",a:"Qal participe fém. de צ-מ-ח (croître, fleurir)"},
+      {heb:"מִסְּבִיבֵנוּ",tl:"misevivenu",type:"adv",a:"סָבִיב (autour) + -נוּ"},
+    ]},
+    {heb:"הִיא חֲזָקָה יוֹתֵר מִכָּל חֶסְרוֹנוֹתֵינוּ",fr:"Elle est plus forte que tous nos manques",mots:[
+      {heb:"הִיא",tl:"hi",type:"pron",a:"Pronom 3fs. : 'elle'"},
+      {heb:"חֲזָקָה",tl:"khazaka",type:"adj",a:"Adj. fém. : forte — racine ח-ז-ק"},
+      {heb:"יוֹתֵר מִ",tl:"yoter mi-",type:"adv",a:"Comparatif : 'plus…que'"},
+      {heb:"חֶסְרוֹנוֹתֵינוּ",tl:"khesronotenu",type:"nom",a:"Plur. de חֶסְרוֹן (manque) + -נוּ"},
+    ]},
+    {heb:"וְגַם הַנֶּגֶב עוֹד יִהְיֶה פּוֹרֵחַ",fr:"Et le Néguev aussi fleurira encore",mots:[
+      {heb:"הַנֶּגֶב",tl:"hanegev",type:"nom",a:"Le Néguev — désert du sud"},
+      {heb:"יִהְיֶה",tl:"yihye",type:"verbe",a:"Qal futur 3ms. de ה-י-ה — auxiliaire"},
+      {heb:"פּוֹרֵחַ",tl:"pore'akh",type:"verbe",a:"Qal participe de פ-ר-ח (fleurir) — futur progressif"},
+    ]},
+    {heb:"וְעוֹד נִדְאַג שֶׁהַזָּקֵן יִהְיֶה שָׂמֵחַ",fr:"Et nous veillerons à ce que le vieillard soit heureux",mots:[
+      {heb:"נִדְאַג",tl:"nid'ag",type:"verbe",a:"Qal futur 1pl. de ד-א-ג (veiller à)"},
+      {heb:"שֶׁ",tl:"she-",type:"part",a:"Subordonnant complétif"},
+      {heb:"הַזָּקֵן",tl:"hazaken",type:"nom",a:"'Le vieillard' — allusion probable à Ben Gourion"},
+      {heb:"שָׂמֵחַ",tl:"same'akh",type:"adj",a:"Adj. masc. : heureux — racine שׂ-מ-ח"},
+    ]},
+  ]},
+];
+
+// ══════════════════════════════════
+// ÉTAT
+// ══════════════════════════════════
+let currentView = 'vers';
+let currentStrophe = 1;
+let activeStrophes = new Set(STROPHES.map(s=>s.id));
+let reconStrophe = 1;
+let reconScore = 0;
+let reconAnswered = {};
+
+const TAGS = {nom:'tag-nom',verbe:'tag-verbe',adj:'tag-adj',prep:'tag-prep',conj:'tag-conj',adv:'tag-adv',pron:'tag-pron',art:'tag-art',part:'tag-part'};
+const LABELS = {nom:'Nom',verbe:'Verbe',adj:'Adjectif',prep:'Prép.',conj:'Conj.',adv:'Adverbe',pron:'Pronom',art:'Article',part:'Particule'};
+const CAT_ORDER = ['verbe','nom','adj','adv','prep','conj','pron','art','part'];
+const CAT_NAMES = {verbe:'Verbes',nom:'Noms',adj:'Adjectifs',adv:'Adverbes',prep:'Prépositions',conj:'Conjonctions',pron:'Pronoms',art:'Articles',part:'Particules'};
+
+// ══════════════════════════════════
+// ONGLETS
+// ══════════════════════════════════
+function setTab(name, btn) {
+  document.querySelectorAll('.main-tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
+  if (name==='audio') buildAudio();
+  if (name==='recon') buildRecon();
+}
+
+// ══════════════════════════════════
+// ANALYSE
+// ══════════════════════════════════
+function tag(type){ return `<span class="tag ${TAGS[type]||'tag-nom'}">${LABELS[type]||type}</span>`; }
+
+function motCard(m, showVers=false) {
+  return `<div class="mot-card">
+    <div class="mot-top"><span class="mot-heb">${m.heb}</span><span class="mot-translit">${m.tl}</span>${tag(m.type)}</div>
+    <div class="mot-analyse">${m.a}</div>
+    ${showVers && m._vers ? `<div class="mot-vers">${m._vers}</div>` : ''}
+  </div>`;
+}
+
+function renderVers(s) {
+  let out = '';
+  if (s.refrain) out += `<div class="refrain-bar">— Refrain —</div>`;
+  out += s.vers.map(v=>`
+    <div class="vers-block">
+      <div class="vers-text"><div class="vers-heb">${v.heb}</div><div class="vers-fr">${v.fr}</div></div>
+      <div class="mots-row">${v.mots.map(m=>motCard(m)).join('')}</div>
+    </div>`).join('');
+  return out;
+}
+
+function renderCat(s) {
+  const byType = {};
+  s.vers.forEach(v=>v.mots.forEach(m=>{
+    if(!byType[m.type]) byType[m.type]=[];
+    byType[m.type].push({...m,_vers:v.heb});
+  }));
+  return CAT_ORDER.filter(t=>byType[t]&&byType[t].length>0).map(t=>`
+    <div class="cat-section" data-type="${t}">
+      <div class="cat-header" onclick="toggleCat(this.closest('.cat-section'))">
+        ${tag(t)}<span class="cat-label">${CAT_NAMES[t]}</span>
+        <span class="cat-count">(${byType[t].length} forme${byType[t].length>1?'s':''})</span>
+        <span class="cat-arrow">▼</span>
+      </div>
+      <div class="cat-grid">${byType[t].map(m=>motCard(m,true)).join('')}</div>
+    </div>`).join('');
+}
+
+function toggleCat(sec){ sec.classList.toggle('closed'); }
+
+function render() {
+  const visible = STROPHES.filter(s=>activeStrophes.has(s.id));
+  const s = visible.find(x=>x.id===currentStrophe) || visible[0];
+  const area = document.getElementById('contentArea');
+  if (!s) { area.innerHTML='<p style="padding:1rem;font-style:italic;color:var(--ink-light);">Aucune strophe sélectionnée — clique sur "Tout activer" ou choisis une strophe.</p>'; return; }
+  currentStrophe = s.id;
+  area.innerHTML = currentView==='vers' ? renderVers(s) : renderCat(s);
+  updateNavBtns();
+}
+
+function setView(v) {
+  currentView=v;
+  document.getElementById('btnVers').classList.toggle('active',v==='vers');
+  document.getElementById('btnCat').classList.toggle('active',v==='cat');
+  render();
+}
+
+// ── Nav strophes avec Tout activer / Tout effacer ──
+function buildNav() {
+  const nav = document.getElementById('strophesNav');
+  nav.innerHTML = '';
+
+  const bAll = document.createElement('button');
+  bAll.className='btn-all'; bAll.textContent='✅ Tout activer';
+  bAll.onclick=()=>{ activeStrophes=new Set(STROPHES.map(s=>s.id)); updateNavBtns(); render(); };
+  nav.appendChild(bAll);
+
+  const bNone = document.createElement('button');
+  bNone.className='btn-none'; bNone.textContent='🗑 Tout effacer';
+  bNone.onclick=()=>{ activeStrophes.clear(); updateNavBtns(); render(); };
+  nav.appendChild(bNone);
+
+  const sep = document.createElement('span'); sep.className='sn-sep'; nav.appendChild(sep);
+
+  STROPHES.forEach(s=>{
+    const b = document.createElement('button');
+    b.className='sn-btn'; b.dataset.id=s.id; b.textContent=s.titre;
+    b.onclick=()=>{
+      if (activeStrophes.has(s.id) && activeStrophes.size>1) {
+        activeStrophes.delete(s.id);
+        if(currentStrophe===s.id) { const rem=[...activeStrophes]; currentStrophe=rem[0]||1; }
+      } else {
+        activeStrophes.add(s.id);
+        currentStrophe=s.id;
+      }
+      updateNavBtns(); render();
+    };
+    nav.appendChild(b);
+  });
+  updateNavBtns();
+}
+
+function updateNavBtns() {
+  document.querySelectorAll('.sn-btn').forEach(b=>{
+    const id=parseInt(b.dataset.id);
+    b.style.opacity=activeStrophes.has(id)?'1':'.35';
+    b.classList.toggle('active',id===currentStrophe&&activeStrophes.has(id));
+  });
+}
+
+// ══════════════════════════════════
+// AUDIO TTS
+// ══════════════════════════════════
+function buildAudio() {
+  document.getElementById('audioContent').innerHTML = STROPHES.map(s=>`
+    <div class="audio-strophe-block">
+      <div class="audio-strophe-head">
+        <span class="audio-strophe-titre">${s.titre}</span>
+        <span class="audio-strophe-heb">${s.heb}</span>
+        <button class="btn-speak-strophe" id="spk-s${s.id}" onclick="speakStrophe(${s.id},this)">▶ Strophe entière</button>
+      </div>
+      ${s.vers.map((v,vi)=>`
+        <div class="audio-vers-row">
+          <div class="audio-heb">${v.heb}</div>
+          <div class="audio-fr">${v.fr}</div>
+          <button class="btn-speak-vers" id="spk-${s.id}-${vi}" onclick="speakVers(this,'${v.heb.replace(/'/g,"\\'")}')">▶</button>
+        </div>`).join('')}
+    </div>`).join('');
+}
+
+function speakVers(btn, text) {
+  if(!window.speechSynthesis){ alert('Synthèse vocale non disponible.'); return; }
+  speechSynthesis.cancel();
+  document.querySelectorAll('.btn-speak-vers,.btn-speak-strophe').forEach(b=>b.classList.remove('playing'));
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang='he-IL'; u.rate=0.82;
+  u.onstart=()=>btn&&btn.classList.add('playing');
+  u.onend=()=>btn&&btn.classList.remove('playing');
+  speechSynthesis.speak(u);
+}
+
+function speakStrophe(sid, btn) {
+  if(!window.speechSynthesis) return;
+  speechSynthesis.cancel();
+  document.querySelectorAll('.btn-speak-vers,.btn-speak-strophe').forEach(b=>b.classList.remove('playing'));
+  const s=STROPHES.find(x=>x.id===sid);
+  if(!s) return;
+  btn.classList.add('playing');
+  let i=0;
+  const texts=s.vers.map(v=>v.heb);
+  function next(){
+    if(i>=texts.length){btn.classList.remove('playing');return;}
+    const u=new SpeechSynthesisUtterance(texts[i++]);
+    u.lang='he-IL'; u.rate=0.82; u.onend=next;
+    speechSynthesis.speak(u);
+  }
+  next();
+}
+
+function speakAll() {
+  if(!window.speechSynthesis) return;
+  speechSynthesis.cancel();
+  document.querySelectorAll('.btn-speak-vers,.btn-speak-strophe').forEach(b=>b.classList.remove('playing'));
+  const btn=document.getElementById('btnPlayAll');
+  const all=STROPHES.flatMap(s=>s.vers.map(v=>v.heb));
+  btn.classList.add('playing'); btn.textContent='⏸ Lecture en cours…';
+  let i=0;
+  function next(){
+    if(i>=all.length){btn.classList.remove('playing');btn.textContent='▶ Lire toute la chanson';return;}
+    const u=new SpeechSynthesisUtterance(all[i++]);
+    u.lang='he-IL'; u.rate=0.82; u.onend=next;
+    speechSynthesis.speak(u);
+  }
+  next();
+}
+
+function stopAll(){
+  window.speechSynthesis&&speechSynthesis.cancel();
+  document.querySelectorAll('.btn-speak-vers,.btn-speak-strophe,.btn-play-all').forEach(b=>b.classList.remove('playing'));
+  const btn=document.getElementById('btnPlayAll');
+  if(btn) btn.textContent='▶ Lire toute la chanson';
+}
+
+// ══════════════════════════════════
+// RECONSTITUER
+// ══════════════════════════════════
+function buildRecon(){
+  const picker=document.getElementById('reconPicker');
+  picker.innerHTML='';
+  STROPHES.forEach(s=>{
+    const b=document.createElement('button');
+    b.className='rs-btn'+(s.id===reconStrophe?' active':'');
+    b.textContent=s.titre;
+    b.onclick=()=>{
+      reconStrophe=s.id;
+      document.querySelectorAll('.rs-btn').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      renderRecon();
+    };
+    picker.appendChild(b);
+  });
+  renderRecon();
+}
+
+function renderRecon(){
+  reconScore=0; reconAnswered={};
+  const s=STROPHES.find(x=>x.id===reconStrophe);
+  updateReconScore(s.vers.length);
+
+  document.getElementById('reconContent').innerHTML=s.vers.map((v,vi)=>{
+    const uid=`r${s.id}_${vi}`;
+    const words=v.heb.split(' ');
+    // Mélange avec Fisher-Yates
+    const sh=[...words];
+    for(let i=sh.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[sh[i],sh[j]]=[sh[j],sh[i]];}
+    return `<div class="recon-ex" id="ex-${uid}">
+      <div class="recon-ex-head">
+        <span class="recon-fr">${v.fr}</span>
+        <span class="recon-num">Vers ${vi+1}</span>
+      </div>
+      <div class="drop-zone" id="dz-${uid}" data-answer="${encodeURIComponent(v.heb)}"></div>
+      <div class="tiles-pool" id="tp-${uid}">
+        ${sh.map((w,wi)=>`<span class="tile" id="tl-${uid}-${wi}" data-uid="${uid}" data-word="${encodeURIComponent(w)}" onclick="clickTile(this)">${w}</span>`).join('')}
+      </div>
+      <div class="recon-fb" id="fb-${uid}"></div>
+      <div class="recon-btns">
+        <button class="btn-check" onclick="checkVers('${uid}')">✓ Vérifier</button>
+        <button class="btn-reset-ex" onclick="resetVers('${uid}')">↺ Réinitialiser</button>
+        <button class="btn-reveal" onclick="revealVers('${uid}','${encodeURIComponent(v.heb)}')">👁 Solution</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function clickTile(tile){
+  const uid=tile.dataset.uid;
+  const dz=document.getElementById('dz-'+uid);
+  // Déjà dans la zone ? retirer
+  if(tile.parentElement===dz){
+    dz.removeChild(tile);
+    document.getElementById('tp-'+uid).appendChild(tile);
+    tile.classList.remove('in-zone');
+    dz.classList.remove('correct-z','wrong-z');
+    document.getElementById('fb-'+uid).textContent='';
+    return;
+  }
+  // Depuis la pool → zone
+  if(tile.classList.contains('used')) return;
+  tile.classList.add('in-zone');
+  dz.appendChild(tile);
+  dz.classList.remove('correct-z','wrong-z');
+  document.getElementById('fb-'+uid).textContent='';
+}
+
+function checkVers(uid){
+  const dz=document.getElementById('dz-'+uid);
+  const answer=decodeURIComponent(dz.dataset.answer);
+  const placed=[...dz.querySelectorAll('.tile')].map(t=>t.textContent).join(' ');
+  const fb=document.getElementById('fb-'+uid);
+  if(placed.trim()===answer.trim()){
+    fb.textContent='✅ Correct !'; fb.className='recon-fb ok';
+    dz.classList.add('correct-z'); dz.classList.remove('wrong-z');
+    if(!reconAnswered[uid]){reconAnswered[uid]=true;reconScore++;updateReconScore();}
+  } else {
+    fb.textContent='❌ Pas encore… réessaie ou révèle la solution.'; fb.className='recon-fb ko';
+    dz.classList.add('wrong-z'); dz.classList.remove('correct-z');
+  }
+}
+
+function resetVers(uid){
+  const dz=document.getElementById('dz-'+uid);
+  const tp=document.getElementById('tp-'+uid);
+  [...dz.querySelectorAll('.tile')].forEach(t=>{
+    t.classList.remove('in-zone');
+    tp.appendChild(t);
+  });
+  dz.classList.remove('correct-z','wrong-z');
+  document.getElementById('fb-'+uid).textContent='';
+  if(reconAnswered[uid]){delete reconAnswered[uid];reconScore=Math.max(0,reconScore-1);updateReconScore();}
+}
+
+function revealVers(uid,encoded){
+  const dz=document.getElementById('dz-'+uid);
+  const tp=document.getElementById('tp-'+uid);
+  const answer=decodeURIComponent(encoded);
+  // Vider les deux zones
+  [...dz.querySelectorAll('.tile')].forEach(t=>{t.classList.remove('in-zone');tp.appendChild(t);});
+  dz.classList.remove('correct-z','wrong-z');
+  // Insérer les mots dans le bon ordre
+  answer.split(' ').forEach(w=>{
+    // Chercher une tuile correspondante dans la pool
+    const match=[...tp.querySelectorAll('.tile')].find(t=>t.textContent===w&&!t.classList.contains('in-zone'));
+    if(match){match.classList.add('in-zone');dz.appendChild(match);}
+  });
+  dz.classList.add('correct-z');
+  const fb=document.getElementById('fb-'+uid);
+  fb.textContent='👁 Solution affichée.'; fb.className='recon-fb ok';
+}
+
+function updateReconScore(total){
+  if(total===undefined){
+    const s=STROPHES.find(x=>x.id===reconStrophe);
+    total=s?s.vers.length:0;
+  }
+  document.getElementById('reconScore').textContent=reconScore;
+  document.getElementById('reconTotal').textContent=total;
+}
+
+// ══ INIT ══
+buildNav();
+render();
+</script>
+</body>
+</html>

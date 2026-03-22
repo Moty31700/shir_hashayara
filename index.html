@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="icon" type="image/png" sizes="192x192" href="https://moty31700.github.io/assets/icon-192.png">
+<link rel="shortcut icon" href="https://moty31700.github.io/assets/icon-192.png">
+<title>כְּלֵי עֶזֶר לְעִבְרִית — Outils de langue hébraïque</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Hebrew:wght@300;400;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #f5f0e8;
+  --cream-dark: #e8deca;
+  --ink: #2c1f0e;
+  --ink-light: #5a3e28;
+  --gold: #9a7b2f;
+  --gold-light: #c4a24a;
+  --rust: #8b3a1a;
+  --sage: #4a6741;
+  --blue: #1a3a5c;
+  --border: rgba(154,123,47,0.28);
+  --shadow: 0 4px 20px rgba(44,31,14,0.10);
+}
+
+* { box-sizing:border-box; margin:0; padding:0; }
+
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: 'Crimson Pro', serif;
+  font-size: 17px;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+/* Texture parchemin */
+body::before {
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+}
+
+.wrap { max-width: 900px; margin: 0 auto; padding: 3rem 1.5rem 5rem; position: relative; z-index: 1; }
+
+/* ── HEADER ── */
+header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 2px solid var(--gold);
+}
+
+.header-ornament {
+  font-size: 2rem;
+  margin-bottom: .8rem;
+  opacity: .7;
+}
+
+header h1 {
+  font-family: 'Noto Serif Hebrew', serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  direction: rtl;
+  margin-bottom: .3rem;
+  color: var(--ink);
+}
+
+header h2 {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: 1.3rem;
+  color: var(--ink-light);
+  font-weight: 400;
+  margin-bottom: .8rem;
+}
+
+.header-sub {
+  font-size: .88rem;
+  color: var(--ink-light);
+  font-style: italic;
+}
+
+/* ── SECTION TITRE ── */
+.section-title {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--gold);
+  letter-spacing: .08em;
+  margin: 2.5rem 0 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+}
+.section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ── GRILLE DE CARTES ── */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.2rem;
+}
+
+/* ── CARTE ── */
+.card {
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: transform .2s, box-shadow .2s;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 28px rgba(44,31,14,.14);
+}
+
+.card-top {
+  padding: 1.1rem 1.2rem .8rem;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(135deg, var(--cream-dark), var(--cream));
+  flex: 1;
+}
+
+.card-icon {
+  font-size: 1.6rem;
+  margin-bottom: .5rem;
+  display: block;
+}
+
+.card-heb {
+  font-family: 'Noto Serif Hebrew', serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  direction: rtl;
+  margin-bottom: .15rem;
+  color: var(--ink);
+}
+
+.card-title {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--ink-light);
+  margin-bottom: .5rem;
+}
+
+.card-desc {
+  font-size: .84rem;
+  color: var(--ink-light);
+  line-height: 1.5;
+}
+
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .3rem;
+  margin-top: .6rem;
+}
+
+.ctag {
+  font-size: .68rem;
+  padding: .05rem .45rem;
+  border-radius: 10px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.ctag-morph  { background: #e8eef5; color: var(--blue);  border: 1px solid var(--blue); }
+.ctag-desktop{ background: #e8f0e8; color: var(--sage);  border: 1px solid var(--sage); }
+.ctag-mobile { background: #f5ede8; color: var(--rust);  border: 1px solid var(--rust); }
+.ctag-music  { background: #f0ebe0; color: var(--gold);  border: 1px solid var(--gold); }
+.ctag-hip    { background: #eee8f0; color: #5a3a7a;      border: 1px solid #9a6abf; }
+
+/* ── LIENS DES DEUX VERSIONS ── */
+.card-links {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid var(--border);
+}
+
+.card-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .4rem;
+  padding: .65rem .5rem;
+  font-size: .82rem;
+  color: var(--ink-light);
+  text-decoration: none;
+  transition: background .15s, color .15s;
+  border-right: 1px solid var(--border);
+  font-family: 'Crimson Pro', serif;
+}
+.card-link:last-child { border-right: none; }
+.card-link:hover {
+  background: var(--gold);
+  color: var(--cream);
+}
+.card-link .licon { font-size: 1rem; }
+
+/* ── CARTE LARGE (une seule version) ── */
+.card-link-single {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  padding: .65rem 1rem;
+  font-size: .85rem;
+  color: var(--ink-light);
+  text-decoration: none;
+  transition: background .15s, color .15s;
+  border-top: 1px solid var(--border);
+  font-family: 'Crimson Pro', serif;
+  text-align: center;
+}
+.card-link-single:hover { background: var(--gold); color: var(--cream); }
+
+/* ── ABOUT ── */
+.about-box {
+  margin-top: 3rem;
+  background: linear-gradient(135deg, rgba(154,123,47,.08), rgba(154,123,47,.03));
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--gold);
+  border-radius: 4px;
+  padding: 1.3rem 1.6rem;
+  font-size: .9rem;
+}
+.about-box h3 {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--gold);
+  margin-bottom: .6rem;
+}
+
+/* ── FOOTER ── */
+footer {
+  text-align: center;
+  margin-top: 3rem;
+  font-size: .78rem;
+  color: var(--gold);
+  font-style: italic;
+  border-top: 1px solid var(--border);
+  padding-top: 1.2rem;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 480px) {
+  header h1 { font-size: 1.7rem; }
+  header h2 { font-size: 1.1rem; }
+  .cards-grid { grid-template-columns: 1fr; }
+  .wrap { padding: 2rem 1rem 4rem; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HEADER -->
+<header>
+  <div class="header-ornament">✦ ✦ ✦</div>
+  <h1>כְּלֵי עֶזֶר לְעִבְרִית</h1>
+  <h2>Outils pédagogiques de langue hébraïque</h2>
+  <div class="header-sub">Analyses morphologiques · Chansons israéliennes · Approche Montessori</div>
+</header>
+
+<!-- SECTION : ANALYSES MORPHOLOGIQUES -->
+<div class="section-title">📖 Analyses morphologiques de chansons</div>
+
+<div class="cards-grid">
+
+  <!-- שיר השיירה -->
+  <div class="card">
+    <div class="card-top">
+      <span class="card-icon">🚶</span>
+      <div class="card-heb">שִׁיר הַשַּׁיָּרָה</div>
+      <div class="card-title">Le Chant de la Caravane</div>
+      <div class="card-desc">
+        Paroles de <strong>עָלִי מוֹהָר</strong>, mélodie grecque populaire, interprété par <strong>אָרִיק אַיינְשְׁטַיין</strong> (1987). Analyse complète mot par mot avec regroupement par catégories grammaticales.
+      </div>
+      <div class="card-tags">
+        <span class="ctag ctag-morph">Morphologie</span>
+        <span class="ctag ctag-music">Chanson classique</span>
+        <span class="ctag ctag-desktop">Desktop</span>
+        <span class="ctag ctag-mobile">Mobile</span>
+      </div>
+    </div>
+    <div class="card-links">
+      <a class="card-link" href="shir_hashayara_desktop.html">
+        <span class="licon">🖥</span> Desktop
+      </a>
+      <a class="card-link" href="shir_hashayara_mobile.html">
+        <span class="licon">📱</span> Mobile / iPad
+      </a>
+    </div>
+  </div>
+
+  <!-- ג'רוזלם -->
+  <div class="card">
+    <div class="card-top">
+      <span class="card-icon">🕌</span>
+      <div class="card-heb">ג'רוּזָלֶם</div>
+      <div class="card-title">Jerusalem — הַדַּג נָחָשׁ</div>
+      <div class="card-desc">
+        Paroles de <strong>שָׁאנָן סְטְרִיט</strong>, mélodie d'<strong>אַלְפָא בְּלוֹנְדִי</strong> (2000). Hip-hop israélien engagé : sacré et profane, argot et liturgie, hébreu · anglais · français.
+      </div>
+      <div class="card-tags">
+        <span class="ctag ctag-morph">Morphologie</span>
+        <span class="ctag ctag-hip">Hip-hop</span>
+        <span class="ctag ctag-desktop">Desktop</span>
+        <span class="ctag ctag-mobile">Mobile</span>
+      </div>
+    </div>
+    <div class="card-links">
+      <a class="card-link" href="jerusalem_desktop.html">
+        <span class="licon">🖥</span> Desktop
+      </a>
+      <a class="card-link" href="jerusalem_mobile.html">
+        <span class="licon">📱</span> Mobile / iPad
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<!-- SECTION : À VENIR -->
+<div class="section-title">🔜 Prochains outils</div>
+
+<div class="cards-grid">
+
+  <div class="card" style="opacity:.55; pointer-events:none;">
+    <div class="card-top">
+      <span class="card-icon">📚</span>
+      <div class="card-heb">לֶקְסִיקוֹן</div>
+      <div class="card-title">Lexique enrichi hébreu-français</div>
+      <div class="card-desc">Plus de 5 700 entrées thématiques, style parchemin, filtres par source et catégorie.</div>
+      <div class="card-tags">
+        <span class="ctag ctag-morph">Lexique</span>
+        <span class="ctag ctag-desktop">Desktop</span>
+      </div>
+    </div>
+    <div class="card-link-single">🚧 En préparation</div>
+  </div>
+
+  <div class="card" style="opacity:.55; pointer-events:none;">
+    <div class="card-top">
+      <span class="card-icon">🎮</span>
+      <div class="card-heb">מִשְׂחַק אוֹצַר מִלִּים</div>
+      <div class="card-title">Jeu Vrai/Faux vocabulaire B2</div>
+      <div class="card-desc">130 paires avec nikoud, sélection de catégories, score et bilan des erreurs — approche Montessori.</div>
+      <div class="card-tags">
+        <span class="ctag ctag-morph">Jeu</span>
+        <span class="ctag ctag-mobile">Mobile</span>
+      </div>
+    </div>
+    <div class="card-link-single">🚧 En préparation</div>
+  </div>
+
+  <div class="card" style="opacity:.55; pointer-events:none;">
+    <div class="card-top">
+      <span class="card-icon">🔤</span>
+      <div class="card-heb">מִלּוֹן פְּעָלִים</div>
+      <div class="card-title">Dictionnaire de verbes hébreux</div>
+      <div class="card-desc">Racines, binyanim, conjugaisons complètes et audio TTS he-IL.</div>
+      <div class="card-tags">
+        <span class="ctag ctag-morph">Verbes</span>
+        <span class="ctag ctag-desktop">Desktop</span>
+        <span class="ctag ctag-mobile">Mobile</span>
+      </div>
+    </div>
+    <div class="card-link-single">🚧 En préparation</div>
+  </div>
+
+</div>
+
+<!-- À PROPOS -->
+<div class="about-box">
+  <h3>À propos de ces outils</h3>
+  <p>Ces ressources pédagogiques sont conçues pour l'apprentissage de l'hébreu moderne selon une approche <strong>Montessori</strong> — autonomie, progression naturelle, feedback immédiat. Chaque outil propose une version <strong>desktop</strong> (iMac) et une version <strong>mobile/iPad</strong> optimisée pour le tactile.</p>
+  <p style="margin-top:.5rem;">Les analyses morphologiques couvrent : racines triconsonantiques, binyanim, état construit, suffixes, emprunts, et registres stylistiques (biblique, moderne, argot).</p>
+</div>
+
+<footer>
+  כְּלֵי עֶזֶר לְעִבְרִית · Moty31700 · GitHub Pages · <span id="yr"></span>
+</footer>
+
+</div>
+
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>

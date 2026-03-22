@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" sizes="192x192" href="https://moty31700.github.io/assets/icon-192.png">
+<link rel="shortcut icon" href="https://moty31700.github.io/assets/icon-192.png">
+<title>ג'רוזלם — הדג נחש — Analyse morphologique</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Hebrew:wght@300;400;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #f4efe6;
+    --cream-dark: #e6deca;
+    --ink: #1a1410;
+    --ink-light: #4a3828;
+    --gold: #8a6b20;
+    --gold-light: #b8902a;
+    --rust: #7a2e10;
+    --sage: #3a5630;
+    --blue: #12304a;
+    --purple: #4a2a6a;
+    --teal: #1a4a5a;
+    --olive: #5a5a1a;
+    --border: rgba(138,107,32,.3);
+    --shadow: 0 2px 14px rgba(26,20,16,.09);
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--cream); color:var(--ink); font-family:'Crimson Pro',serif; font-size:17px; line-height:1.75; min-height:100vh; }
+  body::before {
+    content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
+  }
+  .wrap { max-width:1000px; margin:0 auto; padding:2.5rem 2rem 5rem; position:relative; z-index:1; }
+
+  /* HEADER */
+  header { text-align:center; padding-bottom:2rem; margin-bottom:2rem; border-bottom:2px solid var(--gold); }
+  .eyebrow { font-family:'Crimson Pro',serif; font-style:italic; font-size:.85rem; color:var(--gold); letter-spacing:.18em; text-transform:uppercase; margin-bottom:.4rem; }
+  header h1 { font-family:'Noto Serif Hebrew',serif; font-size:2.6rem; font-weight:700; direction:rtl; margin-bottom:.2rem; }
+  header h2 { font-family:'IM Fell English',serif; font-size:1.4rem; font-style:italic; color:var(--ink-light); font-weight:400; margin-bottom:.7rem; }
+  .header-meta { font-size:.88rem; color:var(--ink-light); font-style:italic; }
+
+  /* INTRO */
+  .intro-card {
+    background:linear-gradient(135deg,rgba(138,107,32,.09),rgba(138,107,32,.03));
+    border:1px solid var(--border); border-left:4px solid var(--gold);
+    border-radius:4px; padding:1.5rem 1.8rem; margin-bottom:2.2rem;
+    box-shadow:var(--shadow);
+  }
+  .intro-card h3 { font-family:'IM Fell English',serif; font-style:italic; font-size:1.1rem; color:var(--gold); margin-bottom:.7rem; }
+  .intro-card p { margin-bottom:.6rem; font-size:.95rem; }
+  .intro-card p:last-child { margin-bottom:0; }
+  .facts { display:flex; flex-wrap:wrap; gap:.35rem; margin-top:.5rem; }
+  .fact { background:rgba(138,107,32,.1); border:1px solid var(--border); border-radius:3px; padding:.1rem .55rem; font-size:.8rem; color:var(--ink-light); font-style:italic; }
+
+  /* CONTROLS */
+  .controls { display:flex; align-items:center; gap:1rem; flex-wrap:wrap; margin-bottom:1.4rem; }
+  .view-toggle { display:flex; gap:.4rem; }
+  .view-btn { background:none; border:1px solid var(--border); border-radius:3px; padding:.28rem .9rem; font-family:'Crimson Pro',serif; font-size:.85rem; cursor:pointer; color:var(--ink-light); transition:all .2s; }
+  .view-btn.active { background:var(--ink); color:var(--cream); border-color:var(--ink); }
+
+  /* STROPHE NAV */
+  .strophes-nav { display:flex; flex-wrap:wrap; gap:.4rem; margin-bottom:1.4rem; }
+  .sn-btn { background:none; border:1px solid var(--border); padding:.28rem .9rem; font-family:'Crimson Pro',serif; font-size:.82rem; cursor:pointer; color:var(--ink-light); border-radius:2px; transition:all .2s; }
+  .sn-btn:hover,.sn-btn.active { background:var(--gold); color:var(--cream); border-color:var(--gold); }
+
+  /* LEGEND */
+  .legend { display:flex; flex-wrap:wrap; gap:.35rem; align-items:center; margin-bottom:1.3rem; }
+  .leg-label { font-size:.8rem; color:var(--ink-light); font-style:italic; margin-right:.4rem; }
+
+  /* VERS VIEW */
+  .vers-block { border:1px solid var(--border); border-radius:3px; margin-bottom:1.1rem; overflow:hidden; box-shadow:var(--shadow); }
+  .vers-text { display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; padding:1rem 1.3rem; background:var(--cream); }
+  .vers-heb { direction:rtl; font-family:'Noto Serif Hebrew',serif; font-size:1.12rem; border-right:3px solid var(--gold-light); padding-right:.8rem; }
+  .vers-fr { font-style:italic; color:var(--ink-light); font-size:.95rem; }
+  .mots-row { background:rgba(138,107,32,.04); border-top:1px solid rgba(138,107,32,.15); padding:.85rem 1.3rem; display:flex; flex-wrap:wrap; gap:.45rem; }
+
+  /* CAT VIEW */
+  .cat-section { margin-bottom:1.8rem; }
+  .cat-header { display:flex; align-items:center; gap:.7rem; margin-bottom:.75rem; padding-bottom:.35rem; border-bottom:1px solid var(--border); }
+  .cat-label-text { font-family:'IM Fell English',serif; font-style:italic; font-size:1.05rem; color:var(--ink); }
+  .cat-count { font-size:.78rem; color:var(--ink-light); font-style:italic; }
+  .cat-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:.5rem; }
+
+  /* MOT CARD */
+  .mot-card { background:var(--cream); border:1px solid var(--border); border-radius:3px; padding:.5rem .75rem; font-size:.84rem; line-height:1.5; transition:box-shadow .15s; }
+  .mot-card:hover { box-shadow:0 2px 8px rgba(26,20,16,.12); }
+  .mot-top { display:flex; align-items:baseline; gap:.4rem; flex-wrap:wrap; margin-bottom:.2rem; }
+  .mot-heb { font-family:'Noto Serif Hebrew',serif; font-size:1.08rem; font-weight:700; direction:rtl; }
+  .mot-translit { font-style:italic; color:var(--gold); font-size:.78rem; }
+  .mot-analyse { color:var(--ink-light); font-size:.81rem; }
+  .mot-vers { font-size:.72rem; color:var(--gold); font-style:italic; margin-top:.12rem; opacity:.75; direction:rtl; font-family:'Noto Serif Hebrew',serif; }
+
+  /* TAGS */
+  .tag { display:inline-block; font-size:.67rem; padding:.04rem .42rem; border-radius:10px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; vertical-align:middle; }
+  .tag-nom   { background:#e8f0e8; color:var(--sage);   border:1px solid var(--sage); }
+  .tag-verbe { background:#e8eef5; color:var(--blue);   border:1px solid var(--blue); }
+  .tag-adj   { background:#f5ede8; color:var(--rust);   border:1px solid var(--rust); }
+  .tag-prep  { background:#f0ebe0; color:var(--gold);   border:1px solid var(--gold); }
+  .tag-conj  { background:#f0f0e0; color:var(--olive);  border:1px solid #b0b020; }
+  .tag-adv   { background:#eee8f0; color:var(--purple); border:1px solid var(--purple); }
+  .tag-pron  { background:#f5e8ee; color:#7a2040;       border:1px solid #b05070; }
+  .tag-art   { background:#e8f0f5; color:var(--teal);   border:1px solid var(--teal); }
+  .tag-part  { background:#f5f0e0; color:#6a5010;       border:1px solid #b09030; }
+  .tag-expr  { background:#f0e8f5; color:#5a2070;       border:1px solid #9050b0; }
+
+  /* ACCORDÉON catégories */
+  .cat-header {
+    cursor: pointer;
+    user-select: none;
+    border-radius: 3px;
+    padding: .3rem .4rem;
+    margin: 0 -.4rem;
+    transition: background .15s;
+  }
+  .cat-header:hover { background: rgba(138,107,32,.07); }
+  .cat-arrow { margin-left: auto; font-size: .75rem; color: var(--gold); transition: transform .25s; display: inline-block; }
+  .cat-section.closed .cat-arrow { transform: rotate(-90deg); }
+  .cat-grid { overflow: hidden; transition: max-height .3s ease, opacity .25s ease; max-height: 2000px; opacity: 1; }
+  .cat-section.closed .cat-grid { max-height: 0 !important; opacity: 0; }
+
+  /* REFRAIN LABEL */
+  .refrain-bar { text-align:center; font-style:italic; color:var(--gold); font-size:.8rem; letter-spacing:.1em; padding:.35rem; border-top:1px solid var(--border); border-bottom:1px solid var(--border); background:rgba(138,107,32,.05); margin-bottom:.8rem; }
+
+  footer { text-align:center; margin-top:3rem; font-size:.78rem; color:var(--gold); font-style:italic; border-top:1px solid var(--border); padding-top:1.2rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">Analyse morphologique complète</div>
+  <h1>ג'רוזלם</h1>
+  <h2>Jerusalem</h2>
+  <div class="header-meta">הַדַּג נָחָשׁ &nbsp;·&nbsp; Paroles : שָׁאנָן סְטְרִיט &nbsp;·&nbsp; Mélodie : אַלְפָא בְּלוֹנְדִי</div>
+</header>
+
+<div class="intro-card">
+  <h3>La chanson et son contexte</h3>
+  <p><strong>ג'רוזלם</strong> est l'un des titres phares de l'album de début du <strong>הַדַּג נָחָשׁ</strong> (Hadag Nahash, « Le Poisson Serpent »), <em>« הַמְּכוֹנָה שֶׁל הַגְּרוּב »</em> (« La Machine du Groove »), sorti en <strong>2000</strong>. La formation est fondée à Jérusalem par le rappeur-parolier <strong>שָׁאנָן סְטְרִיט</strong> (Shaanan Street) — figure centrale du hip-hop israélien engagé depuis vingt-cinq ans.</p>
+  <p>La mélodie est empruntée au reggae-man ivoirien <strong>אַלְפָא בְּלוֹנְדִי</strong> (Alpha Blondy, né Seydou Koné en 1953), surnommé « le Bob Marley de l'Afrique ». Son titre <em>Jerusalem</em> (1986) mêlait hébreux, arabe, anglais et français dans un hymne de paix pour la Ville sainte. Shaanan Street l'a ainsi repris et « ramené en Israël » — ou plus précisément à Jérusalem, en y greffant un texte israélien contemporain, mêlant humour, argot, références culturelles et amour de la ville.</p>
+  <p>Le texte fonctionne sur deux registres : le <strong>sacré</strong> (formules liturgiques : <em>ברוך אתה אדוני, ברוך אתה ירושלים</em>) et le <strong>profane quotidien</strong> (le marché, le taxi, les falafel, les petites combines). Cette collision est la marque de fabrique de Hadag Nahash : le groupe est connu comme une formation à engagement social, porté par les textes denses et politiques de Shaanan Street.</p>
+  <div class="facts">
+    <span class="fact">Album : הַמְּכוֹנָה שֶׁל הַגְּרוּב (2000)</span>
+    <span class="fact">Mélodie : Alpha Blondy — Jerusalem (1986)</span>
+    <span class="fact">Genre : Hip-hop / Reggae / Funk</span>
+    <span class="fact">Ville : ירושלים</span>
+    <span class="fact">Refrain bilingue : Hébreu + Français</span>
+  </div>
+</div>
+
+<div class="legend">
+  <span class="leg-label">Catégories :</span>
+  <span class="tag tag-nom">Nom</span>
+  <span class="tag tag-verbe">Verbe</span>
+  <span class="tag tag-adj">Adjectif</span>
+  <span class="tag tag-prep">Prép.</span>
+  <span class="tag tag-conj">Conj.</span>
+  <span class="tag tag-adv">Adverbe</span>
+  <span class="tag tag-pron">Pronom</span>
+  <span class="tag tag-art">Article</span>
+  <span class="tag tag-part">Particule</span>
+  <span class="tag tag-expr">Expression</span>
+</div>
+
+<div class="controls">
+  <div class="view-toggle">
+    <button class="view-btn active" id="btnVers" onclick="setView('vers')">📜 Par vers</button>
+    <button class="view-btn" id="btnCat" onclick="setView('cat')">🗂 Par catégorie</button>
+  </div>
+</div>
+
+<div class="strophes-nav" id="strophesNav"></div>
+<div id="contentArea"></div>
+
+<footer>ג'רוזלם · הַדַּג נָחָשׁ · Analyse morphologique · usage pédagogique</footer>
+</div>
+
+<script>
+const STROPHES = [
+  {
+    id:1, titre:"Refrain liturgique", heb:"בָּרוּךְ אַתָּה...", refrain:true,
+    vers:[
+      { heb:"בָּרוּךְ אַתָּה אֲדֹנָי", fr:"Béni sois-tu, Seigneur",
+        mots:[
+          {heb:"בָּרוּךְ",  tl:"barukh",  type:"adj",  a:"Adj./participe Qal passif de ב-ר-כ (bénir) : 'béni' — ouverture canonique des bénédictions juives (ברכות)"},
+          {heb:"אַתָּה",    tl:"ata",     type:"pron", a:"Pronom personnel 2ms : 'tu, toi' — adresse directe à Dieu"},
+          {heb:"אֲדֹנָי",   tl:"Adonaï",  type:"nom",  a:"'Mon Seigneur' — אָדוֹן (maître) + suffix -י — substitut liturgique du Tétragramme ; utilisation ici à la fois religieuse et ironique"},
+        ]},
+      { heb:"בָּרוּךְ אַתָּה יְרוּשָׁלַיִם", fr:"Béni sois-tu, Jérusalem",
+        mots:[
+          {heb:"בָּרוּךְ",      tl:"barukh",    type:"adj",  a:"Répétition de la formule liturgique — détournée : bénédiction adressée non plus à Dieu mais à la ville"},
+          {heb:"יְרוּשָׁלַיִם", tl:"Yerushalaim",type:"nom",  a:"Nom propre : Jérusalem — étymologie débattue : יְרוּשָׁה (héritage) + שָׁלֵם (paix/intégrité) ou nom cananéen antérieur — forme hébraïque au duel (-ַיִם)"},
+        ]},
+    ]
+  },
+  {
+    id:2, titre:"Strophe I — La ville du deal", heb:"אִם הָיָה לִי...",
+    vers:[
+      { heb:"אִם הָיָה לִי כָּל פַּעַם שֶׁמִּישֶׁהוּ מַהַשְׁפָּלָה", fr:"Si j'avais [un shekel] à chaque fois que quelqu'un de la Hashpala",
+        mots:[
+          {heb:"אִם",        tl:"im",       type:"conj", a:"Conjonction conditionnelle : 'si'"},
+          {heb:"הָיָה",      tl:"haya",     type:"verbe",a:"Qal passé 3ms de ה-י-ה (être/avoir) — irréel du présent dans la condition"},
+          {heb:"לִי",        tl:"li",       type:"prep", a:"לְ (à/pour) + suffix -י (moi) : 'pour moi, à moi'"},
+          {heb:"כָּל פַּעַם", tl:"kol pa'am",type:"expr", a:"Locution temporelle : 'chaque fois, à chaque fois' — כֹּל (tout) + פַּעַם (fois)"},
+          {heb:"שֶׁ",        tl:"she-",     type:"part", a:"Particule subordonnante relative/complétive"},
+          {heb:"מִישֶׁהוּ",  tl:"mishehu",  type:"pron", a:"Pronom indéfini : 'quelqu'un, n'importe qui'"},
+          {heb:"מַהַשְׁפָּלָה",tl:"mahashpala",type:"nom", a:"מִן+הַ+שְׁפָּלָה : quartier de Jérusalem (Musrara/Mea Shearim area) — argot pour zone populaire défavorisée"},
+        ]},
+      { heb:"שָׁמַע שֶׁאֲנִי יְרוּשַׁלְמִי וְחִשֵּׁב שֶׁאֲנִי מְשׁוּגָע", fr:"A entendu que je suis Jérusalémite et a cru que j'étais fou",
+        mots:[
+          {heb:"שָׁמַע",      tl:"shama",     type:"verbe",a:"Qal passé 3ms de שׁ-מ-ע (entendre, écouter)"},
+          {heb:"שֶׁאֲנִי",    tl:"she'ani",   type:"part", a:"שֶׁ (que) + אֲנִי (je) — subordonnée introduite par le relatif"},
+          {heb:"יְרוּשַׁלְמִי",tl:"yerushalmi",type:"adj",  a:"Adj. gentilé masc. sing. : 'Jérusalémite' — formé sur יְרוּשָׁלַיִם + suffix -י"},
+          {heb:"וְחִשֵּׁב",   tl:"vekhishev",  type:"verbe",a:"Pi'el passé 3ms de ח-שׁ-ב (penser, calculer) — Pi'el : sens actif intensif"},
+          {heb:"מְשׁוּגָע",   tl:"meshuga",    type:"adj",  a:"Adj. masc. sing. : fou, cinglé — Pu'al participe de שׁ-ג-ע — terme très courant en hébreu familier"},
+        ]},
+      { heb:"הָיִיתִי עָשִׁיר כְּמוֹ רָאפָרִים לְיַד לִים", fr:"Je serais riche comme des rappeurs à côté de Lim [le rappeur français]",
+        mots:[
+          {heb:"הָיִיתִי",  tl:"hayiti",   type:"verbe",a:"Qal passé 1ms de ה-י-ה — conditionnel hypothétique (apodose de אִם)"},
+          {heb:"עָשִׁיר",   tl:"ashir",    type:"adj",  a:"Adj. masc. sing. : riche, fortuné — racine ע-שׁ-ר"},
+          {heb:"כְּמוֹ",    tl:"kmo",      type:"prep", a:"Préposition comparative : 'comme, tel que'"},
+          {heb:"רָאפָרִים", tl:"rafarim",  type:"nom",  a:"Plur. de רָאפָּר (rappeur) — emprunt à l'anglais rapper — néologisme"},
+          {heb:"לְיַד",    tl:"leyad",    type:"prep", a:"Locution prépositionnelle : 'à côté de, près de'"},
+          {heb:"לִים",     tl:"Lim",      type:"nom",  a:"Référence au rappeur français LIM (Luc-Immanuel Massamba) — allusion à la culture hip-hop globale"},
+        ]},
+      { heb:"לוֹבֵשׁ עַרְמָה שֶׁל זָהָב יְהַלּוֹמִים בְּחִינָּם", fr:"Portant un tas de diamants d'or gratuitement",
+        mots:[
+          {heb:"לוֹבֵשׁ",    tl:"lovesh",   type:"verbe",a:"Qal participe act. masc. sing. de ל-ב-שׁ (porter/vêtir) — présent/gérondif"},
+          {heb:"עַרְמָה",    tl:"arma",     type:"nom",  a:"Nom fém. sing. : tas, amas, pile — racine ע-ר-מ"},
+          {heb:"שֶׁל",       tl:"shel",     type:"part", a:"Particule possessive/de relation : 'de' — תַּחְלִיף לְ construit"},
+          {heb:"זָהָב",      tl:"zahav",    type:"nom",  a:"Nom masc. sing. : or — terme biblique et courant"},
+          {heb:"יְהַלּוֹמִים",tl:"yehalomin",type:"nom",  a:"Plur. masc. de יְהַלֹם (diamant) — emprunt au français/persan"},
+          {heb:"בְּחִינָּם",  tl:"bekhinam", type:"adv",  a:"Adverbe : 'gratuitement, pour rien' — בְּ + חִינָּם (grâce/gratuité)"},
+        ]},
+      { heb:"אֲבָל הַדַּג נָחָשׁ מַפְצִיצִים אֶתְכֶם", fr:"Mais le Hadag Nahash vous fait exploser",
+        mots:[
+          {heb:"אֲבָל",        tl:"aval",      type:"conj", a:"Conjonction adversative : 'mais'"},
+          {heb:"הַדַּג נָחָשׁ", tl:"hadagnakhash",type:"nom", a:"Article + nom propre : 'Le Poisson Serpent' — nom de scène / jeu de mots (נחשׁ = serpent / ניחוש = devinette)"},
+          {heb:"מַפְצִיצִים",  tl:"maftsiitsim",type:"verbe",a:"Hif'il présent masc. plur. de פ-צ-צ (exploser, bombarder) — argot : 'déchirer, envoyer du lourd'"},
+          {heb:"אֶתְכֶם",      tl:"etkhem",    type:"pron", a:"Pronom 2mp objet direct avec marqueur accusatif אֶת : 'vous (tous)'"},
+        ]},
+      { heb:"זֶה יוֹצֵא מֵאִיתָּנוּ מַגִּיעַ אֲלֵיכֶם", fr:"Ça sort de chez nous, ça vous parvient",
+        mots:[
+          {heb:"זֶה",      tl:"ze",       type:"pron", a:"Démonstratif masc. sing. : 'ceci, ça'"},
+          {heb:"יוֹצֵא",   tl:"yotse",    type:"verbe",a:"Qal participe act. masc. sing. de י-צ-א (sortir) — présent"},
+          {heb:"מֵאִיתָּנוּ",tl:"me'itanu", type:"prep", a:"מִן + אִיתָּנוּ (avec nous, chez nous) — 'de chez nous'"},
+          {heb:"מַגִּיעַ",  tl:"magi'a",   type:"verbe",a:"Hif'il participe masc. sing. de נ-ג-ע (atteindre, parvenir) — présent"},
+          {heb:"אֲלֵיכֶם", tl:"aleikhem", type:"prep", a:"אֶל + suffix -כֶם (vous) : 'vers vous, à vous'"},
+        ]},
+      { heb:"וְחוֹזֵר חָלִילָה הָלוֹךְ וְשׁוֹב", fr:"Et revient — allez-retour (à Dieu ne plaise)",
+        mots:[
+          {heb:"וְחוֹזֵר",   tl:"vekhozér",  type:"verbe",a:"Qal participe masc. sing. de ח-ז-ר (revenir, retourner) — présent"},
+          {heb:"חָלִילָה",   tl:"khalila",   type:"adv",  a:"'À Dieu ne plaise ! Surtout pas !' — expression d'indignation/de mise en garde — ici utilisée avec ironie"},
+          {heb:"הָלוֹךְ וְשׁוֹב",tl:"halokh veshov",type:"expr",a:"Locution : 'aller-retour, en va-et-vient' — הָלוֹךְ (inf. abs. de ה-ל-כ) + שׁוֹב (inf. de שׁ-ו-ב)"},
+        ]},
+      { heb:"הַשְׂרָאָה אֲנִי מְקַבֵּל מֵהָרְחוֹב מִזּוּהָר אַרְגּוֹב", fr:"L'inspiration je la reçois de la rue, de Zohar Argov",
+        mots:[
+          {heb:"הַשְׂרָאָה",  tl:"hasra'a",   type:"nom",  a:"Nom fém. défini : 'l'inspiration, l'illumination' — hif'il nominalisation de שׂ-ר-ה/י-ש-ר"},
+          {heb:"מְקַבֵּל",   tl:"mekabel",   type:"verbe",a:"Pi'el participe masc. sing. de ק-ב-ל (recevoir, accepter) — présent"},
+          {heb:"מֵהָרְחוֹב",  tl:"meharekhov", type:"nom",  a:"מִן+הַ+רְחוֹב : 'de la rue' — הָרְחוֹב = la rue (au sens musical/social)"},
+          {heb:"מִזּוּהָר אַרְגּוֹב",tl:"mi-Zohar Argov",type:"nom",a:"Référence au chanteur yéménite זוהר ארגוב (1955–1987), légende de la musique mizrahim, mort tragiquement en prison — icône populaire"},
+        ]},
+    ]
+  },
+  {
+    id:3, titre:"Strophe II — La scène et la ville", heb:"לֹא מַגִּידִי גּוֹב...",
+    vers:[
+      { heb:"לֹא מַגִּידִי גּוֹב אוֹ מָתִי כַּסְפִּי", fr:"Je ne suis pas Magidi Gob ni Mati Caspi",
+        mots:[
+          {heb:"לֹא",       tl:"lo",     type:"adv",  a:"Négation absolue"},
+          {heb:"מַגִּידִי", tl:"Magidi", type:"nom",  a:"Référence probable à un artiste/personnalité — nom propre"},
+          {heb:"גּוֹב",     tl:"Gob",    type:"nom",  a:"Nom propre (artiste)"},
+          {heb:"מָתִי כַּסְפִּי",tl:"Mati Caspi",type:"nom",a:"מָתִי כַּסְפִּי : chanteur-compositeur israélien populaire — référence à un autre registre musical"},
+        ]},
+      { heb:"מְבִיא אוֹתָהּ דּוּגְרִי יָשִׁיר לִפְעָמִים אֲפִילוּ דַּרְסְטִי", fr:"Je l'amène direct, droit, parfois même drastiquement",
+        mots:[
+          {heb:"מְבִיא",    tl:"mevi",    type:"verbe",a:"Hif'il participe masc. sing. de ב-ו-א (apporter) — présent"},
+          {heb:"אוֹתָהּ",   tl:"otah",    type:"pron", a:"Pronom 3fs objet direct : 'la/elle' (réfère à la musique/inspiration)"},
+          {heb:"דּוּגְרִי",  tl:"dugri",  type:"adv",  a:"Adverbe d'origine arabe/turc : 'directement, franchement, cash' — très courant en hébreu familier"},
+          {heb:"יָשִׁיר",   tl:"yasher",  type:"adv",  a:"'Droit, direct' — adjectif employé adverbialement — racine י-שׁ-ר"},
+          {heb:"לִפְעָמִים",tl:"lif'amim", type:"adv",  a:"Locution temporelle : 'parfois, de temps en temps'"},
+          {heb:"אֲפִילוּ",  tl:"afilu",   type:"adv",  a:"'Même, jusqu'à, y compris' — renforcement du propos"},
+          {heb:"דַּרְסְטִי", tl:"darasti",  type:"adv",  a:"Emprunt à l'anglais/français drastic : 'drastiquement, radicalement'"},
+        ]},
+      { heb:"תָּמִיד אֶלְסְטִי תָּמִיד פַנְטַסְטִי", fr:"Toujours élastique, toujours fantastique",
+        mots:[
+          {heb:"תָּמִיד",    tl:"tamid",    type:"adv",  a:"'Toujours, en permanence' — adverbe très fréquent"},
+          {heb:"אֶלְסְטִי",  tl:"elasti",   type:"adj",  a:"Emprunt : 'élastique, flexible' — métaphore musicale/stylistique"},
+          {heb:"פַנְטַסְטִי", tl:"fantasti", type:"adj",  a:"Emprunt au français/anglais : 'fantastique' — rime interne avec אֶלְסְטִי et דַּרְסְטִי"},
+        ]},
+      { heb:"קָשׁוּר לַפָּאבִים לַחֲמוּרוֹת לַשּׁוּק וְכֵן", fr:"Lié aux pubs, aux bourricots [falafel], au marché et oui",
+        mots:[
+          {heb:"קָשׁוּר",    tl:"kashur",   type:"adj",  a:"Adj./part. Qal passif de ק-שׁ-ר (lier, attacher) : 'lié, attaché, connecté'"},
+          {heb:"לַפָּאבִים", tl:"lapabim",  type:"nom",  a:"לְ+הַ+פָּאבִים : plur. de פָּאב (pub) — emprunt à l'anglais"},
+          {heb:"לַחֲמוּרוֹת",tl:"lakhamurot",type:"nom",  a:"לְ+הַ+חֲמוּרוֹת : plur. de חֲמוֹר (âne) — ici argot : les boulettes de falafel / ou les filles pas très futées — double sens humouristique"},
+          {heb:"לַשּׁוּק",   tl:"lashuk",   type:"nom",  a:"לְ+הַ+שׁוּק : 'au marché' — רְחוֹב הַשּׁוּק = marché de Mahane Yehuda à Jérusalem, référence locale emblématique"},
+          {heb:"וְכֵן",     tl:"vekhen",   type:"adv",  a:"'Et oui, et ainsi' — confirmation/affirmation"},
+        ]},
+      { heb:"גַּם לַבָּקְבּוּק אֵינֶעַל אֲבוּק יֵשׁ חֵלֶק", fr:"Même à la bouteille de Arak Abouk il y a une part",
+        mots:[
+          {heb:"גַּם",         tl:"gam",      type:"adv",  a:"'Aussi, même, de plus'"},
+          {heb:"לַבָּקְבּוּק",  tl:"labakbuk",  type:"nom",  a:"לְ+הַ+בַּקְבּוּק : 'à la bouteille'"},
+          {heb:"אֵינֶעַל אֲבוּק",tl:"Eineal Abouk",type:"nom",a:"Marque d'arak israélien — boisson anisée populaire, référence à la culture de rue/festive"},
+          {heb:"יֵשׁ",         tl:"yesh",     type:"part", a:"Existentiel : 'il y a'"},
+          {heb:"חֵלֶק",        tl:"khélek",   type:"nom",  a:"Nom masc. sing. : part, portion, rôle — racine ח-ל-ק"},
+        ]},
+      { heb:"לֹא אָנִיד עָלָיו חֶמְצָן אֲבָל אֶפְשַׁר לִקְרוֹא לוֹ דֶּלֶק", fr:"Je ne lui lèverai pas le nez dessus [le dénigrer] mais on peut l'appeler carburant",
+        mots:[
+          {heb:"לֹא אָנִיד",  tl:"lo anid",  type:"verbe",a:"Qal futur 1ms de נ-ו-ד/נ-י-ד (secouer, remuer) — locution : 'לא אניד' = ne pas sourciller, ne pas dédaigner"},
+          {heb:"עָלָיו",      tl:"alav",     type:"prep", a:"עַל + suffix -יו (lui) : 'à son égard, sur lui'"},
+          {heb:"חֶמְצָן",     tl:"khemtsan", type:"nom",  a:"Oxygène — ici idiome : 'לא אניד עליו חמצן' = ne pas perdre son souffle sur qqch = ne pas le dénigrer"},
+          {heb:"אֶפְשַׁר",    tl:"efshar",   type:"adv",  a:"'Il est possible, on peut' — particule modale très fréquente en hébreu moderne"},
+          {heb:"לִקְרוֹא לוֹ",tl:"likro lo", type:"verbe",a:"Qal infin. construit de ק-ר-א + לוֹ : 'appeler qqch de' — double datif"},
+          {heb:"דֶּלֶק",      tl:"délek",    type:"nom",  a:"Nom masc. sing. : carburant, essence — métaphore : l'arak comme carburant"},
+        ]},
+      { heb:"בְּלִי לִשְׁקָר בְּ\"ק\" אוֹ בְּ\"כ\" רַק תָּבִיא לִי שֶׁלּוֹ מַהֵר", fr:"Sans tricher en 'k' ou en 'kh', juste apporte-moi le sien vite",
+        mots:[
+          {heb:"בְּלִי לִשְׁקָר",tl:"beli lishkor",type:"verbe",a:"'Sans mentir' — בְּלִי + Qal infin. de שׁ-ק-ר — jeu graphique sur ק/כ (orthographe)"},
+          {heb:"בְּ\"ק\" אוֹ בְּ\"כ\"",tl:"be-kuf o be-khaf",type:"expr",a:"Jeu de mots sur les lettres ק et כ qui ont le même son [k] en hébreu moderne — allusion à l'orthographe fantaisiste"},
+          {heb:"רַק",           tl:"rak",      type:"adv",  a:"'Seulement, juste'"},
+          {heb:"תָּבִיא",       tl:"tavi",     type:"verbe",a:"Hif'il impératif/futur 2ms de ב-ו-א (apporter)"},
+          {heb:"שֶׁלּוֹ",       tl:"shelo",    type:"part", a:"Pronom possessif : 'le sien, celui de lui'"},
+          {heb:"מַהֵר",        tl:"maher",    type:"adv",  a:"'Vite, rapidement' — très courant"},
+        ]},
+      { heb:"כִּי הוֹפָעָה הַיּוֹם, עֲדִיף בִּירוּשָׁלַיִם אַךְ בְּכָל מָקוֹם", fr:"Car ce soir il y a un concert, c'est mieux à Jérusalem mais partout ça marche",
+        mots:[
+          {heb:"כִּי",        tl:"ki",       type:"conj", a:"Conjonction causale/explicative : 'car, parce que'"},
+          {heb:"הוֹפָעָה",    tl:"hofa'a",   type:"nom",  a:"Nom fém. sing. : concert, apparition, spectacle — Hif'il nominalisation de י-פ-ע"},
+          {heb:"הַיּוֹם",     tl:"hayom",    type:"nom",  a:"Article + יוֹם (jour) : 'aujourd'hui' — locution temporelle"},
+          {heb:"עֲדִיף",      tl:"adif",     type:"adj",  a:"Adj. masc. sing. : préférable, mieux — emprunt à l'araméen (עֲדִיף)"},
+          {heb:"בִּירוּשָׁלַיִם",tl:"biYerushalaim",type:"nom",a:"בְּ + יְרוּשָׁלַיִם — préposition de lieu"},
+          {heb:"אַךְ",        tl:"akh",      type:"conj", a:"Conjonction adversative/limitative : 'mais, cependant, quand même'"},
+          {heb:"בְּכָל מָקוֹם",tl:"bekhol makom",type:"expr",a:"Locution : 'partout, en tout lieu' — כֹּל (tout) + מָקוֹם (lieu)"},
+        ]},
+      { heb:"נִשְׂרוֹף אֶת הַבָּמָה נוֹצִיא מַהֲשָׁגֵרָה", fr:"On va brûler la scène, faire sortir de la routine",
+        mots:[
+          {heb:"נִשְׂרוֹף",    tl:"nisrof",   type:"verbe",a:"Qal futur 1pl cohort. de שׂ-ר-ף (brûler) — argot : 'déchirer la scène, tout enflammer'"},
+          {heb:"אֶת הַבָּמָה", tl:"et habama", type:"nom",  a:"Marqueur acc. + article + בָּמָה (scène, estrade, haut lieu)"},
+          {heb:"נוֹצִיא",      tl:"notsi",    type:"verbe",a:"Hif'il futur 1pl de י-צ-א (faire sortir, extraire)"},
+          {heb:"מַהֲשָׁגֵרָה",  tl:"mehashraga",type:"nom",  a:"מִן+הַ+שְׁגֵרָה : 'hors de la routine/quotidien' — שְׁגֵרָה = routine, train-train"},
+        ]},
+      { heb:"עַד שֶׁתִּהְיֶה מְסוּטָּת עַד שֶׁתִּהְיֶה מְרוּצָה", fr:"Jusqu'à ce que tu sois dingue, jusqu'à ce que tu sois satisfaite",
+        mots:[
+          {heb:"עַד שֶׁ",     tl:"ad she-",   type:"conj", a:"Locution conjonctive : 'jusqu'à ce que' — עַד (jusqu'à) + שֶׁ (que)"},
+          {heb:"תִּהְיֶה",    tl:"tihye",     type:"verbe",a:"Qal futur 2ms/3fs de ה-י-ה (être) — futur de résultat"},
+          {heb:"מְסוּטָּת",   tl:"mesuta",    type:"adj",  a:"Adj./part. fém. sing. : 'déjantée, dingue, déchirée' — argot Pu'al/Hof'al de שׁ-ט-ה"},
+          {heb:"מְרוּצָה",    tl:"merutsa",   type:"adj",  a:"Adj./part. fém. sing. : 'satisfaite, heureuse' — Pu'al de ר-צ-ה (vouloir, agréer)"},
+        ]},
+    ]
+  },
+  {
+    id:4, titre:"Refrain — Here I am / Je t'aime", heb:"ג'רוזלם...", refrain:true,
+    vers:[
+      { heb:"ג'רוזלם — Here I am", fr:"Jérusalem — Me voici",
+        mots:[
+          {heb:"ג'רוזלם",    tl:"Jerusalem",  type:"nom",  a:"Translittération anglophone de Jérusalem — coexistence du nom anglais (Alpha Blondy) et hébreu dans le texte"},
+          {heb:"Here I am",  tl:"Here I am",  type:"expr", a:"Anglais : 'me voici' — résonance biblique : הִנֵּנִי (Gn 22:1) — 'me voici, Seigneur' repris dans un contexte pop/reggae"},
+        ]},
+      { heb:"ג'רוזלם — Je t'aime", fr:"Jérusalem — Je t'aime",
+        mots:[
+          {heb:"Je t'aime",  tl:"Je t'aime",  type:"expr", a:"Français : déclaration d'amour à la ville — Alpha Blondy avait lui-même mêlé français et hébreu dans son original"},
+        ]},
+    ]
+  },
+  {
+    id:5, titre:"Strophe III — L'art de Jérusalem", heb:"אוֹמָנוּת יְרוּשַׁלְמִית...",
+    vers:[
+      { heb:"אוֹמָנוּת יְרוּשַׁלְמִית שִׁירָה וְצִיּוּר", fr:"Art jérusalémite, chant et peinture",
+        mots:[
+          {heb:"אוֹמָנוּת",    tl:"omanut",    type:"nom",  a:"Nom fém. sing. : art, artisanat — racine א-מ-נ (être habile, fidèle)"},
+          {heb:"יְרוּשַׁלְמִית",tl:"yerushalmi",type:"adj",  a:"Adj. gentilé fém. sing. : 'jérusalémite' — accord avec אוֹמָנוּת"},
+          {heb:"שִׁירָה",      tl:"shira",     type:"nom",  a:"Nom fém. sing. : poésie, chant, chanson — racine שׁ-י-ר"},
+          {heb:"וְצִיּוּר",    tl:"vetsiyur",  type:"nom",  a:"וְ + צִיּוּר : peinture, dessin, illustration — racine צ-י-ר"},
+        ]},
+      { heb:"יֵשׁ סוֹפְרִים מַסְפְּרִי סִיפּוּר JD רִיקּוּד פִיסּוּל וּ...", fr:"Il y a des écrivains, des conteurs, JD, danse, sculpture et…",
+        mots:[
+          {heb:"יֵשׁ",        tl:"yesh",      type:"part", a:"Existentiel : 'il y a'"},
+          {heb:"סוֹפְרִים",   tl:"sofrim",    type:"nom",  a:"Plur. de סוֹפֵר (écrivain, scribe) — racine ס-פ-ר"},
+          {heb:"מַסְפְּרִי",  tl:"masperi",   type:"nom",  a:"État construit plur. de מְסַפֵּר (conteur) — Pi'el"},
+          {heb:"סִיפּוּר",    tl:"sipur",     type:"nom",  a:"Nom masc. sing. : histoire, récit — Pi'el nominalisation de ס-פ-ר"},
+          {heb:"JD",          tl:"JD",        type:"nom",  a:"Sigle/artiste — référence à un acteur de la scène artistique jérusalémite"},
+          {heb:"רִיקּוּד",    tl:"rikud",     type:"nom",  a:"Nom masc. sing. : danse — racine ר-ק-ד"},
+          {heb:"פִּיסּוּל",   tl:"pisul",     type:"nom",  a:"Nom masc. sing. : sculpture — Pi'el nominalisation de פ-ס-ל"},
+        ]},
+    ]
+  },
+];
+
+// ═══════════════════════
+// ÉTAT & RENDU
+// ═══════════════════════
+const TAGS = { nom:'tag-nom', verbe:'tag-verbe', adj:'tag-adj', prep:'tag-prep', conj:'tag-conj', adv:'tag-adv', pron:'tag-pron', art:'tag-art', part:'tag-part', expr:'tag-expr' };
+const LABELS = { nom:'Nom', verbe:'Verbe', adj:'Adjectif', prep:'Prép.', conj:'Conj.', adv:'Adverbe', pron:'Pronom', art:'Article', part:'Particule', expr:'Expression' };
+const CAT_ORDER = ['verbe','nom','adj','adv','prep','conj','pron','art','part','expr'];
+const CAT_NAMES = { verbe:'Verbes', nom:'Noms', adj:'Adjectifs', adv:'Adverbes', prep:'Prépositions', conj:'Conjonctions', pron:'Pronoms', art:'Articles', part:'Particules', expr:'Expressions & emprunts' };
+
+let currentView = 'vers', currentStrophe = 1;
+
+function tag(type) { return `<span class="tag ${TAGS[type]||'tag-nom'}">${LABELS[type]||type}</span>`; }
+
+function motCard(m, showVers=false) {
+  return `<div class="mot-card">
+    <div class="mot-top"><span class="mot-heb">${m.heb}</span><span class="mot-translit">${m.tl}</span>${tag(m.type)}</div>
+    <div class="mot-analyse">${m.a}</div>
+    ${showVers && m._vers ? `<div class="mot-vers">${m._vers}</div>` : ''}
+  </div>`;
+}
+
+function renderVers(s) {
+  let out = '';
+  if (s.refrain) out += `<div class="refrain-bar">— Refrain —</div>`;
+  out += s.vers.map(v => `
+    <div class="vers-block">
+      <div class="vers-text"><div class="vers-heb">${v.heb}</div><div class="vers-fr">${v.fr}</div></div>
+      <div class="mots-row">${v.mots.map(m=>motCard(m,false)).join('')}</div>
+    </div>`).join('');
+  return out;
+}
+
+function renderCat(s) {
+  const byType = {};
+  s.vers.forEach(v => v.mots.forEach(m => {
+    if (!byType[m.type]) byType[m.type] = [];
+    byType[m.type].push({...m, _vers:v.heb});
+  }));
+  return CAT_ORDER.filter(t=>byType[t]&&byType[t].length>0).map(t => `
+    <div class="cat-section" data-type="${t}">
+      <div class="cat-header" onclick="toggleCat(this.closest('.cat-section'))">
+        ${tag(t)}<span class="cat-label-text">${CAT_NAMES[t]}</span><span class="cat-count">(${byType[t].length})</span>
+        <span class="cat-arrow">▼</span>
+      </div>
+      <div class="cat-grid">${byType[t].map(m=>motCard(m,true)).join('')}</div>
+    </div>`).join('');
+}
+
+function toggleCat(section) {
+  section.classList.toggle('closed');
+}
+
+function render() {
+  const s = STROPHES.find(x=>x.id===currentStrophe);
+  document.getElementById('contentArea').innerHTML = currentView==='vers' ? renderVers(s) : renderCat(s);
+  document.querySelectorAll('.sn-btn').forEach(b=>b.classList.toggle('active',parseInt(b.dataset.id)===currentStrophe));
+}
+
+function setView(v) {
+  currentView=v;
+  document.getElementById('btnVers').classList.toggle('active',v==='vers');
+  document.getElementById('btnCat').classList.toggle('active',v==='cat');
+  render();
+}
+
+const nav = document.getElementById('strophesNav');
+STROPHES.forEach(s => {
+  const b = document.createElement('button');
+  b.className='sn-btn'; b.dataset.id=s.id; b.textContent=s.titre;
+  b.onclick=()=>{ currentStrophe=s.id; render(); };
+  nav.appendChild(b);
+});
+render();
+</script>
+</body>
+</html>
